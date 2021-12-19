@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +16,11 @@ import java.util.List;
  */
 public class funciones_proveedor {
     
-    Conexion cn= new Conexion();
+   Conexion cn= new Conexion();
    Connection con;
    PreparedStatement ps;
    ResultSet rs;
-   
+  
    public boolean RegistrarProveedor(proveedores pb)
    {
        String sql ="INSERT INTO proveedores(dni_proveedor,nombre_proveedor,telefono,direccion,correo,razon) VALUES (?,?,?,?,?,?)";
@@ -51,7 +52,8 @@ public class funciones_proveedor {
        }
        
    }
-   public List ListarEmpleados()
+   
+   public List ListarProveedores()
    {
       List< proveedores > Listapv = new ArrayList();
       
@@ -81,7 +83,7 @@ public class funciones_proveedor {
    }
    public boolean EliminarCliente(int id1)
     {
-        String sql="DELETE FROM proveedores WHERE id_proveedor=?";
+        String sql="DELETE FROM proveedores WHERE dni_proveedor=?";
         try
         {
             ps=con.prepareStatement(sql);
@@ -102,5 +104,8 @@ public class funciones_proveedor {
             }
         }
 }
+  
+   
+   
    
 }
