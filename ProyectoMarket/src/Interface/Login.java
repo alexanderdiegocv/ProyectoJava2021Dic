@@ -20,6 +20,10 @@ public class Login extends javax.swing.JFrame {
  
      String users = usuario.getText();
      String contraseña = String.valueOf(password.getPassword());
+     if(contraseña.length() < 9) {
+        JOptionPane.showMessageDialog(null,"Contraseña no válida");
+        return;
+     }
      if(!"".equals(usuario.getText()) && !"".equals(String.valueOf(password.getPassword())))
              {
                  
@@ -152,7 +156,6 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        validar();
-            
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
