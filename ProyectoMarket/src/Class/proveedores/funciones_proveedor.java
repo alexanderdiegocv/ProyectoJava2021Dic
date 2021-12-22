@@ -21,7 +21,7 @@ public class funciones_proveedor {
    PreparedStatement ps;
    ResultSet rs;
   
-   public boolean RegistrarProveedor(proveedores pb)
+   public boolean RegistrarProveedor(Proveedor pb)
    {
        String sql ="INSERT INTO proveedores(dni_proveedor,nombre_proveedor,telefono,direccion,correo,razon) VALUES (?,?,?,?,?,?)";
        try
@@ -56,7 +56,7 @@ public class funciones_proveedor {
    
    public List ListarProveedores()
    {
-      List< proveedores > Listapv = new ArrayList();
+      List< Proveedor > Listapv = new ArrayList();
       
       String sql="SELECT*FROM proveedores";
       
@@ -66,16 +66,9 @@ public class funciones_proveedor {
            rs=ps.executeQuery();
            while(rs.next())
            {
-                    proveedores cl= new proveedores();
-                    cl.setId_proveedor(rs.getInt("id_proveedor"));
-                    cl.setDni(rs.getString("dni_proveedor"));
-                    cl.setNombre(rs.getString("nombre_proveedor"));
-                    cl.setTelefono(rs.getString("telefono"));
-                    cl.setDireccion(rs.getString("direccion"));
-                    cl.setCorreo(rs.getString("correo"));
-                    cl.setRazon(rs.getString("razon"));
-
-                    Listapv.add(cl);
+                    Proveedor pr = new Proveedor(rs.getString("dni_proveedor"),rs.getString("nombre_proveedor"),rs.getString("telefono"),rs.getString("direccion"),rs.getString("correo"),rs.getString("razon"));
+                    pr.setId_proveedor(rs.getInt("id_proveedor"));
+                    Listapv.add(pr);
            }
        } catch (SQLException e) {
            System.out.println(e.toString()); 

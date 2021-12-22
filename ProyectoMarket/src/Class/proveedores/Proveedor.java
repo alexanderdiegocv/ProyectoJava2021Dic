@@ -2,7 +2,7 @@
 package Class.proveedores;
 
 
-public class proveedores {
+public class Proveedor {
  private int id_proveedor;
  private String dni;
  private String nombre;
@@ -10,11 +10,18 @@ public class proveedores {
  private String direccion;
  private String correo;
  private String razon;  
- 
- public proveedores()
- {
-     
- }
+
+    public Proveedor() {
+    }
+
+    public Proveedor(String dni, String nombre, String telefono, String direccion, String correo, String razon) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.correo = correo;
+        this.razon = razon;
+    }
 
     public int getId_proveedor() {
         return id_proveedor;
@@ -71,5 +78,7 @@ public class proveedores {
     public void setRazon(String razon) {
         this.razon = razon;
     }
+    
+    
 }
 

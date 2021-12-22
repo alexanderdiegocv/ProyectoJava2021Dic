@@ -8,7 +8,7 @@ package Interface;
 import Class.Conexion;
 import javax.swing.JOptionPane;
 import Class.proveedores.funciones_proveedor;
-import Class.proveedores.proveedores;
+import Class.proveedores.Proveedor;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Proveeedor extends javax.swing.JFrame {
 
-    proveedores pb =new proveedores();
     funciones_proveedor fp = new funciones_proveedor();
     DefaultTableModel modelo;
     Conexion cn= new Conexion();
@@ -78,7 +77,7 @@ void limpiar()
 }
   public void ListarProveedores()
 {
-    List <proveedores> Listarpv = fp.ListarProveedores();
+    List <Proveedor> Listarpv = fp.ListarProveedores();
     
     modelo=(DefaultTableModel) tablaproveedor.getModel();
     
@@ -126,13 +125,7 @@ void limpiar()
         }
 }
   
-  
-  
-  
-  
-  
-  
-  
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -291,6 +284,12 @@ void limpiar()
         jPanel1.add(txtid_proveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 30, -1));
         jPanel1.add(txtrazon, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 90, 120, -1));
         jPanel1.add(txtdireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 50, 120, -1));
+
+        txtcorreo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtcorreoActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtcorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 90, 110, -1));
 
         txtdni.addActionListener(new java.awt.event.ActionListener() {
@@ -321,19 +320,13 @@ void limpiar()
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        habilitar();
-   
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
       
           if(!"".equals(txtdni.getText()) && !"".equals(txtnombre)&& !"".equals(txttelefono.getText()) && !"".equals(txtdireccion.getText()) && !"".equals(txtcorreo.getText()) && !"".equals(txtrazon.getText()))
       {
-           pb.setDni(txtdni.getText());
-           pb.setNombre(txtnombre.getText());
-           pb.setTelefono(txttelefono.getText());
-           pb.setDireccion(txtdireccion.getText());
-           pb.setCorreo(txtcorreo.getText());
-           pb.setRazon(txtrazon.getText());
+           Proveedor pb =new Proveedor(txtdni.getText(),txtnombre.getText(),txttelefono.getText(),txtdireccion.getText(), txtcorreo.getText(), txtrazon.getText());
            fp.RegistrarProveedor(pb);
            
            JOptionPane.showMessageDialog(null,"Empleado Registrado");
@@ -383,8 +376,8 @@ if(pregunta==0)
             txtdni.setText(tablaproveedor.getValueAt(fila, 0).toString());
             txtnombre.setText(tablaproveedor.getValueAt(fila, 1).toString());
             txttelefono.setText(tablaproveedor.getValueAt(fila, 2).toString());
-            txtdireccion.setText(tablaproveedor.getValueAt(fila, 3).toString());
-            txtcorreo.setText(tablaproveedor.getValueAt(fila, 4).toString());
+            txtcorreo.setText(tablaproveedor.getValueAt(fila, 3).toString());
+            txtdireccion.setText(tablaproveedor.getValueAt(fila, 4).toString());
             txtrazon.setText(tablaproveedor.getValueAt(fila, 5).toString());
  
         }
@@ -437,6 +430,10 @@ try
     System.out.println(e.toString());
 }
     }//GEN-LAST:event_txtbuscarKeyReleased
+
+    private void txtcorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcorreoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtcorreoActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
