@@ -53,6 +53,7 @@ public class funciones_proveedor {
        
    }
    
+   
    public List ListarProveedores()
    {
       List< proveedores > Listapv = new ArrayList();
@@ -81,6 +82,7 @@ public class funciones_proveedor {
        }
       return Listapv;
    }
+   
    public boolean EliminarCliente(int id1)
     {
         String sql="DELETE FROM proveedores WHERE dni_proveedor=?";
