@@ -2,7 +2,6 @@
 package Class.productos;
 
 import Class.Conexion;
-import Class.proveedores.Proveedor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +13,7 @@ import java.util.List;
 public class Producto {
     
     //Atributos para la conección a la base de Datos
-    private Conexion cn= new Conexion();
+    private final Conexion cn= new Conexion();
     private Connection con;
     private PreparedStatement ps;
     private ResultSet rs;
