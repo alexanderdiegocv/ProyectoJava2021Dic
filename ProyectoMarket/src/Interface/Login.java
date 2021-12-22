@@ -3,6 +3,7 @@ package Interface;
 
 import Class.usuario;
 import Class.login;
+import Class.productos.Producto;
 import javax.swing.JOptionPane;
         
 
@@ -35,6 +36,8 @@ public class Login extends javax.swing.JFrame {
          
          if(user.getUsuario()!=null && user.getContraseña()!=null)
          {
+             Producto pd = null;
+             pd.ListarProductos();
              Sistema sis =new Sistema();
              sis.setVisible(true);
              dispose();
