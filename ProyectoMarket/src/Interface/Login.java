@@ -36,8 +36,7 @@ public class Login extends javax.swing.JFrame {
          
          if(user.getUsuario()!=null && user.getContraseña()!=null)
          {
-             Producto pd = null;
-             pd.ListarProductos();
+          
              Sistema sis =new Sistema();
              sis.setVisible(true);
              dispose();
