@@ -4,6 +4,7 @@ import Class.Conexion;
 import javax.swing.JOptionPane;
 import Class.proveedores.funciones_proveedor;
 import Class.proveedores.Proveedor;
+import Interface.Sistema;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +23,7 @@ public class Proveedor_interfaz extends javax.swing.JFrame {
     PreparedStatement ps;
     ResultSet rs;
     Statement st;
+    
     public Proveedor_interfaz() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -271,7 +273,7 @@ void limpiar()
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 390, 80, 50));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 410, 80, 50));
 
         txtbuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
