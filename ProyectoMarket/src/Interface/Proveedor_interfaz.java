@@ -9,6 +9,7 @@ import Class.Conexion;
 import javax.swing.JOptionPane;
 import Class.proveedores.funciones_proveedor;
 import Class.proveedores.Proveedor;
+import Interface.Sistema;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,6 +31,7 @@ public class Proveedor_interfaz extends javax.swing.JFrame {
     PreparedStatement ps;
     ResultSet rs;
     Statement st;
+    
     public Proveedor_interfaz() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -159,7 +161,6 @@ void limpiar()
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(840, 480));
-        setPreferredSize(new java.awt.Dimension(840, 480));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -279,7 +280,7 @@ void limpiar()
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 390, 80, 50));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 410, 80, 50));
 
         txtbuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
