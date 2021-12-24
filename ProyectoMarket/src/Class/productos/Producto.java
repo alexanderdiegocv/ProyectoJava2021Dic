@@ -13,7 +13,7 @@ import java.util.List;
 public class Producto {
     
     //Atributos para la conección a la base de Datos
-    private final Conexion cn= new Conexion();
+    private Conexion cn= new Conexion();
     private Connection con;
     private PreparedStatement ps;
     private ResultSet rs;
@@ -98,10 +98,16 @@ public class Producto {
       return ListaProd;
     }
     
-    public boolean EliminarProducto (int id_producto){
+    public static boolean EliminarProducto (int id_producto){
         String sql="DELETE FROM productos WHERE id_producto=?";
         try
         {
+            Conexion cn= new Conexion();
+            Connection con;
+            PreparedStatement ps;
+            ResultSet rs;
+            
+            con=cn.getConnection();
             ps=con.prepareStatement(sql);
             ps.setInt(1, id_producto);
             ps.execute();
@@ -110,14 +116,6 @@ public class Producto {
         {
             System.out.println(e.toString());
             return false;
-        }finally{
-            try
-            {
-            con.close();
-            }catch(Exception ex)
-            {
-                System.out.println(ex.toString());
-            }
         }
     }
     

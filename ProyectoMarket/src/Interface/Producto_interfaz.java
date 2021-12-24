@@ -1,4 +1,3 @@
-
 package Interface;
 
 import Class.Conexion;
@@ -78,29 +77,29 @@ public class Producto_interfaz extends javax.swing.JFrame {
     
     public void mostrarProductos(){
       
-    List <Producto> ListaProductos = pd.ListarProductos();
-    
-    modelo=(DefaultTableModel) tablaproductos.getModel();
-    
-    Object[] ob= new Object[7];
-     
-    for(int i=0;i<ListaProductos.size();i++)
-    {
-        ob[0]=ListaProductos.get(i).getId_producto();
-        ob[1]=ListaProductos.get(i).getNombre();
-        ob[2]=ListaProductos.get(i).getDescripcion();
-        ob[3]=ListaProductos.get(i).getPrecio();
-        ob[4]=ListaProductos.get(i).getUnidades();  
-        ob[5]=ListaProductos.get(i).getStock();
-        ob[6]=ListaProductos.get(i).getId_proveedor();
-        modelo.addRow(ob);
+        List <Producto> ListaProductos = pd.ListarProductos();
+
+        modelo=(DefaultTableModel) tablaproductos.getModel();
+
+        Object[] ob= new Object[7];
+
+        for(int i=0;i<ListaProductos.size();i++)
+        {
+            ob[0]=ListaProductos.get(i).getId_producto();
+            ob[1]=ListaProductos.get(i).getNombre();
+            ob[2]=ListaProductos.get(i).getDescripcion();
+            ob[3]=ListaProductos.get(i).getPrecio();
+            ob[4]=ListaProductos.get(i).getUnidades();  
+            ob[5]=ListaProductos.get(i).getStock();
+            ob[6]=ListaProductos.get(i).getId_proveedor();
+            modelo.addRow(ob);
+        }
+        tablaproductos.setModel(modelo);  
     }
-    tablaproductos.setModel(modelo);  
-}
     
     private void Modificar(){
   
-    String sql="UPDATE proveedores SET nombre='"+txtnombre.getText()+ "',descripcion='"+txtdescripcion.getText()+"',precio='"+txtprecio.getText()+"',unidades='"+txtunidades.getText()+"',stock='"+txtstock.getText()+"',id_proveedor='"+jComboBox1.getName()+"'  where id_producto ='"+txtID.getText()+"'";
+    String sql="UPDATE productos SET nombre='"+txtnombre.getText()+ "',descripcion='"+txtdescripcion.getText()+"',precio='"+txtprecio.getText()+"',unidades='"+txtunidades.getText()+"',stock='"+txtstock.getText()+"',id_proveedor='"+1+"'  WHERE id_producto ='"+txtID.getText()+"'";
 
      try
         {
@@ -330,7 +329,7 @@ public class Producto_interfaz extends javax.swing.JFrame {
         Habilitar();
     
         if(fila==-1){
-            JOptionPane.showMessageDialog(null,"Usuario no seleccionado");
+            JOptionPane.showMessageDialog(null,"Producto no seleccionado");
         }
         else{
            
@@ -349,12 +348,33 @@ public class Producto_interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        if(!txtID.getText().equals("")){
+            Modificar();
+            LimpiarTabla();
+            mostrarProductos();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Inserta una fila");
+        }
     
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
+        //if(!"".equals(txtnombre.getText())||!"".equals(txtdescripcion.getText())||!"".equals(txtprecio.getText())|| !"".equals(txtunidades.getText())||!"".equals(txtstock.getText())){
+            //JOptionPane.showMessageDialog(null,"Seleccione en la tabla");
+        //}else{
+            if(!"".equals(txtID.getText())){
+                int pregunta=JOptionPane.showConfirmDialog(null,"Estas seguro que quieres eliminar");
+                if(pregunta==0){
+                          int id = Integer.parseInt(txtID.getText());
+                          Producto.EliminarProducto(id);
+                          LimpiarTabla();
+                          mostrarProductos();
+                          LimpiarJFields();
+                }
+            }
+        //}
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

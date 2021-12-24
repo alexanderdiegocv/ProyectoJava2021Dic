@@ -5,12 +5,18 @@
  */
 package Interface;
 
+import Class.productos.Producto;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author admi
  */
 public class Carrito_interfaz extends javax.swing.JDialog {
 
+    Producto pd = null;
+    DefaultTableModel modelo;
     /**
      * Creates new form Carrito_interfaz
      */
@@ -18,6 +24,28 @@ public class Carrito_interfaz extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        mostrarEnTabla();
+    }
+    
+    public void mostrarEnTabla() {
+        List <Producto> ListaProductos = pd.ListarProductos();
+
+        modelo=(DefaultTableModel) tablaProductos.getModel();
+
+        Object[] ob= new Object[7];
+
+        for(int i=0;i<ListaProductos.size();i++)
+        {
+            ob[0]=ListaProductos.get(i).getId_producto();
+            ob[1]=ListaProductos.get(i).getNombre();
+            ob[2]=ListaProductos.get(i).getDescripcion();
+            ob[3]=ListaProductos.get(i).getPrecio();
+            ob[4]=ListaProductos.get(i).getUnidades();  
+            ob[5]=ListaProductos.get(i).getStock();
+            ob[6]=ListaProductos.get(i).getId_proveedor();
+            modelo.addRow(ob);
+        }
+        tablaProductos.setModel(modelo);
     }
 
     /**
@@ -30,14 +58,14 @@ public class Carrito_interfaz extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        tablaProductos = new javax.swing.JTable();
+        JButtonSeleccionar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -45,17 +73,17 @@ public class Carrito_interfaz extends javax.swing.JDialog {
                 "id producto", "nombre", "precio", "cantidad", "precio total"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaProductos);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 660, 200));
 
-        jButton1.setText("SELECCIONA EL PRODUCTO");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        JButtonSeleccionar.setText("SELECCIONA EL PRODUCTO");
+        JButtonSeleccionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                JButtonSeleccionarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 300, 30));
+        getContentPane().add(JButtonSeleccionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 300, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin7.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -64,9 +92,10 @@ public class Carrito_interfaz extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void JButtonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonSeleccionarActionPerformed
+        
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_JButtonSeleccionarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -111,9 +140,9 @@ public class Carrito_interfaz extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton JButtonSeleccionar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaProductos;
     // End of variables declaration//GEN-END:variables
 }
