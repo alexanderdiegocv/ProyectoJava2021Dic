@@ -1,15 +1,27 @@
 
 package Class.proveedores;
 
+import Class.Conexion;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 public class Proveedor {
- private int id_proveedor;
- private String dni;
- private String nombre;
- private String telefono;
- private String direccion;
- private String correo;
- private String razon;  
+    
+    private final Conexion cn= new Conexion();
+    private Connection con;
+    private PreparedStatement ps;
+    private ResultSet rs;
+    
+    private int id_proveedor;
+    private String dni;
+    private String nombre;
+    private String telefono;
+    private String direccion;
+    private String correo;
+    private String razon;  
 
     public Proveedor() {
     }
@@ -79,6 +91,31 @@ public class Proveedor {
         this.razon = razon;
     }
     
+    public String BuscarProveedor(int id_proveedor){
+
+        String sql="SELECT*FROM proveedores WHERE id_proveedor LIKE '%"+id_proveedor+"%'";
+        String nombre = "";
+        try
+        {
+            Conexion cn= new Conexion();
+            Connection con;
+            PreparedStatement ps;
+            ResultSet rs;
+            
+            con=cn.getConnection();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery(sql);
+
+            if(rs.next())
+            {
+                nombre = rs.getString("nombre_proveedor");
+            }
+        }catch(SQLException e)
+        {
+            System.out.println(e.toString());
+        }
+        return nombre;
+    }
     
 }
 

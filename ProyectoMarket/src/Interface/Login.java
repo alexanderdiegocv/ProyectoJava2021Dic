@@ -3,7 +3,6 @@ package Interface;
 
 import Class.usuario;
 import Class.login;
-import Class.productos.Producto;
 import javax.swing.JOptionPane;
         
 
@@ -14,7 +13,6 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         setLocationRelativeTo(null);
-        
     }
 
  public void validar(){
@@ -36,7 +34,6 @@ public class Login extends javax.swing.JFrame {
          
          if(user.getUsuario()!=null && user.getContraseña()!=null)
          {
-          
              Sistema sis =new Sistema();
              sis.setVisible(true);
              dispose();
@@ -52,8 +49,6 @@ public class Login extends javax.swing.JFrame {
          JOptionPane.showMessageDialog(null,"Rellana los espacios");
      }
  }
-    
-    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
