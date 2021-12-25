@@ -13,7 +13,7 @@ import java.util.List;
 public class Producto {
     
     //Atributos para la conección a la base de Datos
-    private final Conexion cn= new Conexion();
+    private Conexion cn= new Conexion();
     private Connection con;
     private PreparedStatement ps;
     private ResultSet rs;
@@ -24,15 +24,15 @@ public class Producto {
     private String descripcion;
     private String precio;
     private String unidades;
-    public String cantidad;
+    private String stock;
     private int id_proveedor;
 
-    public Producto(String nombre, String descripcion, String precio, String unidades, String cantidad, int id_proveedor) {
+    public Producto(String nombre, String descripcion, String precio, String unidades, String stock, int id_proveedor) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.unidades = unidades;
-        this.cantidad = cantidad;
+        this.stock = stock;
         this.id_proveedor = id_proveedor;
     }
 
@@ -43,7 +43,7 @@ public class Producto {
 
   
     public boolean RegistrarProducto(Producto producto){
-       String sql = "INSERT INTO productos(nombre,descripcion,precio,unidades,cantidad,id_proveedor) VALUES (?,?,?,?,?,?)";
+       String sql = "INSERT INTO productos(nombre,descripcion,precio,unidades,stock,id_proveedor) VALUES (?,?,?,?,?,?)";
        try
        {
         con=cn.getConnection();
@@ -52,7 +52,7 @@ public class Producto {
         ps.setString(2,producto.getDescripcion());
         ps.setString(3,producto.getPrecio());
         ps.setString(4,producto.getUnidades());
-        ps.setString(5,producto.getCantidad());
+        ps.setString(5,producto.getStock());
         ps.setInt(6,producto.getId_proveedor());
         ps.execute();
         
@@ -83,15 +83,15 @@ public class Producto {
            Connection con;
            PreparedStatement ps;
            ResultSet rs;
+           
            con=cn.getConnection();
            ps=con.prepareStatement(sql);
            rs=ps.executeQuery();
            while(rs.next())
            {
-                Producto pr = new Producto(rs.getString("nombre"),rs.getString("descripcion"),rs.getString("precio"),rs.getString("unidades"),rs.getString("cantidad"),rs.getInt("id_proveedor"));
+                Producto pr = new Producto(rs.getString("nombre"),rs.getString("descripcion"),rs.getString("precio"),rs.getString("unidades"),rs.getString("stock"),rs.getInt("id_proveedor"));
                 pr.setId_producto(rs.getInt("id_producto"));
                 ListaProd.add(pr);
-                    
            }
        } catch (SQLException e) {
            System.out.println(e.toString()); 
@@ -103,7 +103,61 @@ public class Producto {
        
       return ListaProd;
     }
+    
+    public static boolean EliminarProducto (int id_producto){
+        String sql="DELETE FROM productos WHERE id_producto=?";
+        try
+        {
+            Conexion cn= new Conexion();
+            Connection con;
+            PreparedStatement ps;
+            ResultSet rs;
+            
+            con=cn.getConnection();
+            ps=con.prepareStatement(sql);
+            ps.setInt(1, id_producto);
+            ps.execute();
+            return true;
+        }catch(SQLException e)
+        {
+            System.out.println(e.toString());
+            return false;
+        }
+    }
+    
+    
+    /*
+    String[]titulos ={"Dni","Nombre","Telefono","Correo","Direccion","Razon"};   
+String[]registros=new String[50];
 
+String sql="SELECT*FROM proveedores WHERE dni_proveedor LIKE '%"+txtbuscar.getText()+"%'";
+
+modelo=new DefaultTableModel(null,titulos);
+try
+{
+   con=cn.getConnection();
+   st=con.createStatement();
+   rs=st.executeQuery(sql);
+   
+    while(rs.next())
+    {
+        
+        registros[0]=rs.getString("dni_proveedor");
+        registros[1]=rs.getString("nombre_proveedor");
+        registros[2]=rs.getString("telefono");
+        registros[3]=rs.getString("correo");
+        registros[4]=rs.getString("direccion");
+        registros[5]=rs.getString("razon");
+       modelo.addRow(registros);
+   
+    }
+    tablaproveedor.setModel(modelo);
+}catch(SQLException e)
+{
+    System.out.println(e.toString());
+}
+    */
+    
     public int getId_producto() {
         return id_producto;
     }
@@ -144,12 +198,12 @@ public class Producto {
         this.unidades = unidades;
     }
 
-    public String getCantidad() {
-        return cantidad;
+    public String getStock() {
+        return stock;
     }
 
-    public void setCantidad(String cantidad) {
-        this.cantidad = cantidad;
+    public void setStock(String stock) {
+        this.stock = stock;
     }
 
     public int getId_proveedor() {
@@ -159,6 +213,6 @@ public class Producto {
     public void setId_proveedor(int id_proveedor) {
         this.id_proveedor = id_proveedor;
     }
-    
+
     
 }

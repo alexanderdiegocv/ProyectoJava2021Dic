@@ -18,6 +18,8 @@ import static Interface.NuevaVenta_interfaz.txtstock;
  */
 public class Carrito_interfaz extends javax.swing.JDialog {
 
+    Producto pd = null;
+    DefaultTableModel modelo;
     /**
      * Creates new form Carrito_interfaz
      */
@@ -69,13 +71,13 @@ public class Carrito_interfaz extends javax.swing.JDialog {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 650, 200));
 
-        jButton1.setText("SELECCIONA EL PRODUCTO");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        JButtonSeleccionar.setText("SELECCIONA EL PRODUCTO");
+        JButtonSeleccionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                JButtonSeleccionarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 300, 30));
+        getContentPane().add(JButtonSeleccionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 300, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin7.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");

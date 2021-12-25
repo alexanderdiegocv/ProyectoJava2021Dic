@@ -9,10 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author admi
- */
 public class funciones_proveedor {
     
    Conexion cn= new Conexion();
@@ -51,7 +47,6 @@ public class funciones_proveedor {
        }
        
    }
-   
    
    public List ListarProveedores()
    {

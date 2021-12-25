@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Interface;
 
 import Class.Conexion;
@@ -18,10 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-/**
- *
- * @author admi
- */
+
 public class Proveedor_interfaz extends javax.swing.JFrame {
 
     funciones_proveedor fp = new funciones_proveedor();
@@ -77,8 +69,9 @@ void limpiar()
  }
 
 }
-  public void ListarProveedores()
-{
+
+  public void ListarProveedores(){
+      
     List <Proveedor> Listarpv = fp.ListarProveedores();
     
     modelo=(DefaultTableModel) tablaproveedor.getModel();
@@ -282,6 +275,11 @@ void limpiar()
         });
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 410, 80, 50));
 
+        txtbuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtbuscarActionPerformed(evt);
+            }
+        });
         txtbuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtbuscarKeyReleased(evt);
@@ -453,6 +451,10 @@ try
       sis.setVisible(true);
       dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void txtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtbuscarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -1,23 +1,127 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Interface;
 
-/**
- *
- * @author admi
- */
+import Class.Conexion;
+import Class.productos.Producto;    
+import java.awt.HeadlessException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class Producto_interfaz extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Producto_interfaz
-     */
+    Producto pd = null;
+    DefaultTableModel modelo;
+    
+    Conexion cn= new Conexion();
+    Connection con;
+    PreparedStatement ps;
+    ResultSet rs;
+    Statement st;
+    
     public Producto_interfaz() {
         initComponents();
-         this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);
+        Inhabilitar();
+        mostrarProductos();
     }
+    
+    private void Inhabilitar() {
+        
+        txtnombre.setEnabled(false);
+        txtdescripcion.setEnabled(false);
+        txtprecio.setEnabled(false);
+        txtunidades.setEnabled(false);
+        txtstock.setEnabled(false);
+       
+        txtID.setText("");
+        txtnombre.setText("");
+        txtdescripcion.setText("");
+        txtprecio.setText("");
+        txtunidades.setText("");
+        txtstock.setText("");
+    }
+    
+    private void Habilitar(){
+        
+        txtnombre.setEnabled(true);
+        txtdescripcion.setEnabled(true);
+        txtprecio.setEnabled(true);
+        txtunidades.setEnabled(true);
+        txtstock.setEnabled(true);
+    
+    }
+    
+    private void LimpiarTabla(){
+        
+        for(int i=0;i<tablaproductos.getRowCount();i++)
+        {
+            modelo.removeRow(i);
+            i=i-1;
+        }
+    }
+    
+    private void LimpiarJFields(){
+    
+        txtID.setText("");
+        txtnombre.setText("");
+        txtdescripcion.setText("");
+        txtprecio.setText("");
+        txtunidades.setText("");
+        txtstock.setText("");
+    }
+    
+    public void mostrarProductos(){
+      
+        List <Producto> ListaProductos = pd.ListarProductos();
+
+        modelo=(DefaultTableModel) tablaproductos.getModel();
+
+        Object[] ob= new Object[7];
+
+        for(int i=0;i<ListaProductos.size();i++)
+        {
+            ob[0]=ListaProductos.get(i).getId_producto();
+            ob[1]=ListaProductos.get(i).getNombre();
+            ob[2]=ListaProductos.get(i).getDescripcion();
+            ob[3]=ListaProductos.get(i).getPrecio();
+            ob[4]=ListaProductos.get(i).getUnidades();  
+            ob[5]=ListaProductos.get(i).getStock();
+            ob[6]=ListaProductos.get(i).getId_proveedor();
+            modelo.addRow(ob);
+        }
+        tablaproductos.setModel(modelo);  
+    }
+    
+    private void Modificar(){
+  
+    String sql="UPDATE productos SET nombre='"+txtnombre.getText()+ "',descripcion='"+txtdescripcion.getText()+"',precio='"+txtprecio.getText()+"',unidades='"+txtunidades.getText()+"',stock='"+txtstock.getText()+"',id_proveedor='"+1+"'  WHERE id_producto ='"+txtID.getText()+"'";
+
+     try
+        {
+            if(!"".equals(txtID.getText())||!"".equals(txtnombre.getText())||!"".equals(txtdescripcion.getText())||!"".equals(txtprecio.getText())|| !"".equals(txtunidades.getText())||!"".equals(txtstock.getText()))
+            {
+                con=cn.getConnection();
+                st=con.createStatement();
+                st.executeUpdate(sql);
+                
+                JOptionPane.showMessageDialog(null,"Producto actualizado");
+                LimpiarTabla();
+                mostrarProductos();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Completa los espacios");
+            }
+        }catch(HeadlessException | SQLException e)
+        {
+            System.out.println(e.toString());
+            
+        }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,29 +133,28 @@ public class Producto_interfaz extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        txtdni = new javax.swing.JTextField();
-        txtnombre = new javax.swing.JTextField();
-        txttelefono = new javax.swing.JTextField();
+        txtdescripcion = new javax.swing.JTextField();
+        txtprecio = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel9 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtdni1 = new javax.swing.JTextField();
+        txtnombre = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        txtcorreo = new javax.swing.JTextField();
+        txtunidades = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        txtdireccion = new javax.swing.JTextField();
+        txtstock = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaproveedor = new javax.swing.JTable();
+        tablaproductos = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         txtbuscar = new javax.swing.JTextField();
+        txtID = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -61,95 +164,83 @@ public class Producto_interfaz extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("PRODUCTOS");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 10, 140, -1));
+        getContentPane().add(txtdescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 230, -1));
+        getContentPane().add(txtprecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 110, -1));
 
-        txtdni.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtdniActionPerformed(evt);
-            }
-        });
-        getContentPane().add(txtdni, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 20, -1));
-        getContentPane().add(txtnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 130, -1));
-        getContentPane().add(txttelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 50, 110, -1));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 90, 130, -1));
-
-        jLabel9.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("ID");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 40, -1));
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 90, 130, -1));
 
         jLabel4.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("NOMBRE");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 70, -1));
 
-        txtdni1.addActionListener(new java.awt.event.ActionListener() {
+        txtnombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtdni1ActionPerformed(evt);
+                txtnombreActionPerformed(evt);
             }
         });
-        getContentPane().add(txtdni1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 130, -1));
+        getContentPane().add(txtnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 230, -1));
 
         jLabel6.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("DESCRIPCION");
+        jLabel6.setText("DESCRIPCIÓN");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 110, -1));
 
         jLabel7.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("PRECIO");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 80, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 90, -1));
 
         jLabel10.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("UNIDADES");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 90, -1));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 90, -1));
 
-        txtcorreo.addActionListener(new java.awt.event.ActionListener() {
+        txtunidades.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtcorreoActionPerformed(evt);
+                txtunidadesActionPerformed(evt);
             }
         });
-        getContentPane().add(txtcorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, 110, -1));
+        getContentPane().add(txtunidades, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 90, 110, -1));
 
         jLabel5.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("CANTIDAD");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 100, -1));
+        jLabel5.setText("STOCK");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 50, 90, -1));
 
         jLabel8.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("PROVEEDOR");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 90, 120, -1));
-        getContentPane().add(txtdireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 50, 130, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 90, -1, -1));
+        getContentPane().add(txtstock, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 50, 130, -1));
 
         jLabel11.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("BUSCAR");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 90, -1));
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, 70, -1));
 
-        tablaproveedor.setModel(new javax.swing.table.DefaultTableModel(
+        tablaproductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Nombre", "Descripcion", "Precio", "Unidades", "Cantidad", "Proveedor"
+                "Id", "Nombre", "Descripcion", "Precio", "Unidades", "Stock", "Proveedor"
             }
         ));
-        tablaproveedor.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaproductos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaproveedorMouseClicked(evt);
+                tablaproductosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tablaproveedor);
+        jScrollPane1.setViewportView(tablaproductos);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 730, 130));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 730, 190));
 
         jButton1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 11)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/nuevo.png"))); // NOI18N
@@ -160,7 +251,7 @@ public class Producto_interfaz extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 130, 40));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 130, 40));
 
         jButton2.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 11)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Actualizar (2).png"))); // NOI18N
@@ -171,7 +262,7 @@ public class Producto_interfaz extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 140, 130, 40));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, 130, 40));
 
         jButton3.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 11)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
@@ -182,7 +273,7 @@ public class Producto_interfaz extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 140, 130, 40));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 150, 130, 40));
 
         jButton4.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 11)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/GuardarTodo.png"))); // NOI18N
@@ -193,7 +284,7 @@ public class Producto_interfaz extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 130, 40));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, 130, 40));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/salir.png"))); // NOI18N
         jButton5.setContentAreaFilled(false);
@@ -204,56 +295,105 @@ public class Producto_interfaz extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 400, 80, 50));
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 400, 80, 50));
 
         txtbuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtbuscarKeyReleased(evt);
             }
         });
-        getContentPane().add(txtbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, 670, -1));
+        getContentPane().add(txtbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 660, -1));
+        getContentPane().add(txtID, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 14, 70, 20));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin7.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin5.jpg"))); // NOI18N
+        jLabel1.setToolTipText("");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 840, 480));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtdniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdniActionPerformed
+    private void txtunidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtunidadesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtdniActionPerformed
+    }//GEN-LAST:event_txtunidadesActionPerformed
 
-    private void txtcorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcorreoActionPerformed
+    private void txtnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtcorreoActionPerformed
-
-    private void txtdni1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdni1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtdni1ActionPerformed
+    }//GEN-LAST:event_txtnombreActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void tablaproveedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaproveedorMouseClicked
-     
-    }//GEN-LAST:event_tablaproveedorMouseClicked
+    private void tablaproductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaproductosMouseClicked
+        int fila = tablaproductos.rowAtPoint(evt.getPoint());
+        Habilitar();
+    
+        if(fila==-1){
+            JOptionPane.showMessageDialog(null,"Producto no seleccionado");
+        }
+        else{
+           
+            txtID.setText(tablaproductos.getValueAt(fila, 0).toString());
+            txtnombre.setText(tablaproductos.getValueAt(fila, 1).toString());
+            txtdescripcion.setText(tablaproductos.getValueAt(fila, 2).toString());
+            txtprecio.setText(tablaproductos.getValueAt(fila, 3).toString());
+            txtunidades.setText(tablaproductos.getValueAt(fila, 4).toString());
+            txtstock.setText(tablaproductos.getValueAt(fila, 5).toString());
+            
+        }
+    }//GEN-LAST:event_tablaproductosMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      
+       Habilitar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        if(!txtID.getText().equals("")){
+            Modificar();
+            LimpiarTabla();
+            mostrarProductos();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Inserta una fila");
+        }
     
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-   
+        //if(!"".equals(txtnombre.getText())||!"".equals(txtdescripcion.getText())||!"".equals(txtprecio.getText())|| !"".equals(txtunidades.getText())||!"".equals(txtstock.getText())){
+            //JOptionPane.showMessageDialog(null,"Seleccione en la tabla");
+        //}else{
+            if(!"".equals(txtID.getText())){
+                int pregunta=JOptionPane.showConfirmDialog(null,"Estas seguro que quieres eliminar");
+                if(pregunta==0){
+                          int id = Integer.parseInt(txtID.getText());
+                          Producto.EliminarProducto(id);
+                          LimpiarTabla();
+                          mostrarProductos();
+                          LimpiarJFields();
+                }
+            }
+        //}
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
+        if(!"".equals(txtnombre.getText())||!"".equals(txtdescripcion.getText())||!"".equals(txtprecio.getText())|| !"".equals(txtunidades.getText())||!"".equals(txtstock.getText()))
+      {
+           Producto pd = new Producto(txtnombre.getText(),txtdescripcion.getText(),txtprecio.getText(), txtunidades.getText(), txtstock.getText(), 1);
+           //pd.setId_producto(Integer.parseInt(txtID.getText()));
+           pd.RegistrarProducto(pd);
+           
+           
+           JOptionPane.showMessageDialog(null,"Producto Registrado");
+      }
+      else
+      {
+          JOptionPane.showMessageDialog(null,"Rellena todos los campos");
+      }
+          LimpiarTabla();
+          mostrarProductos();
+          LimpiarJFields();
  
 
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -320,15 +460,14 @@ public class Producto_interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tablaproveedor;
+    private javax.swing.JTable tablaproductos;
+    private javax.swing.JLabel txtID;
     private javax.swing.JTextField txtbuscar;
-    private javax.swing.JTextField txtcorreo;
-    private javax.swing.JTextField txtdireccion;
-    private javax.swing.JTextField txtdni;
-    private javax.swing.JTextField txtdni1;
+    private javax.swing.JTextField txtdescripcion;
     private javax.swing.JTextField txtnombre;
-    private javax.swing.JTextField txttelefono;
+    private javax.swing.JTextField txtprecio;
+    private javax.swing.JTextField txtstock;
+    private javax.swing.JTextField txtunidades;
     // End of variables declaration//GEN-END:variables
 }
