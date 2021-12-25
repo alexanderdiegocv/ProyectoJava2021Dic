@@ -74,7 +74,7 @@ public class funciones_productos {
             ps.setInt(1,id_producto);
             rs = ps.executeQuery();
             if (rs.next()) {
-                producto.setCantidad(rs.getString("stock"));
+                producto.setStock(rs.getString("stock"));
             }
         } catch (SQLException e) {
             System.out.println(e.toString());

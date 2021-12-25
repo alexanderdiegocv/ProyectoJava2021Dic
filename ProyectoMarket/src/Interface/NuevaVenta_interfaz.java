@@ -336,7 +336,7 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             int cod = Integer.parseInt(tablaventas.getValueAt(i, 0).toString());
             int cant = Integer.parseInt(tablaventas.getValueAt(i, 3).toString());
               pro = prodao.BuscarPro(cod);
-            int StockActual = Integer.parseInt(pro.getCantidad()) - cant;
+            int StockActual = Integer.parseInt(pro.getStock()) - cant;
             prodao.ActualizarStock(StockActual, cod);
             
              
