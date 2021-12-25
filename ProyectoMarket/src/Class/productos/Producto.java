@@ -24,7 +24,7 @@ public class Producto {
     private String descripcion;
     private String precio;
     private String unidades;
-    private String cantidad;
+    public String cantidad;
     private int id_proveedor;
 
     public Producto(String nombre, String descripcion, String precio, String unidades, String cantidad, int id_proveedor) {
@@ -35,7 +35,13 @@ public class Producto {
         this.cantidad = cantidad;
         this.id_proveedor = id_proveedor;
     }
-    
+
+    public Producto(int id_producto) {
+   
+       this.id_producto=id_producto;
+    }
+
+  
     public boolean RegistrarProducto(Producto producto){
        String sql = "INSERT INTO productos(nombre,descripcion,precio,unidades,cantidad,id_proveedor) VALUES (?,?,?,?,?,?)";
        try

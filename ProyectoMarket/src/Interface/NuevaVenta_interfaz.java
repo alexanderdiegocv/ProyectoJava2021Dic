@@ -5,6 +5,8 @@
  */
 package Interface;
 
+import Class.productos.Producto;
+import Class.productos.funciones_productos;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -17,20 +19,32 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import Class.productos.Producto;
 
 /**
  *
  * @author admi
  */
 public class NuevaVenta_interfaz extends javax.swing.JFrame {
-
-    /**
-     * Creates new form NuevaVenta_interfaz
-     */
+    DefaultTableModel modelo;
+    double totalpagar=0.0;
+    int item;
+    double subtotal=0.0;
+    double igv=0.0;
+    private String cantidad;
+    private int id_producto;
+    
+    Producto pro = new Producto(id_producto);
+    
+    funciones_productos prodao =new funciones_productos();
     public NuevaVenta_interfaz() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -49,31 +63,31 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txttotal = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtcantidad = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaventas = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        txtnombre = new javax.swing.JTextField();
+        txtidproducto = new javax.swing.JTextField();
+        txtstock = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        txtprecio = new javax.swing.JTextField();
         jTextField9 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        jTextField10 = new javax.swing.JTextField();
+        txtigv = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        txtsubtotal = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        txtimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -100,29 +114,35 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
         jLabel4.setText("DNI");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 40, 20));
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txttotal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txttotalActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, 140, -1));
+        getContentPane().add(txttotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, 140, -1));
         getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, 130, -1));
-        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 180, 130, -1));
+
+        txtcantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtcantidadKeyPressed(evt);
+            }
+        });
+        getContentPane().add(txtcantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 180, 130, -1));
 
         jLabel7.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("PAGO");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 390, 60, 20));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaventas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Producto", "precio", "cantidad", "precio total"
+                "id producto", "Producto", "precio", "cantidad", "precio total"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaventas);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 710, 100));
 
@@ -135,9 +155,9 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("CANTIDAD");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 90, 20));
-        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 80, 140, -1));
-        getContentPane().add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 130, -1));
-        getContentPane().add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 130, -1));
+        getContentPane().add(txtnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 80, 140, -1));
+        getContentPane().add(txtidproducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 130, -1));
+        getContentPane().add(txtstock, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 130, -1));
 
         jLabel9.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
@@ -153,7 +173,7 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("PRECIO");
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, 70, 20));
-        getContentPane().add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 130, 140, -1));
+        getContentPane().add(txtprecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 130, 140, -1));
 
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,12 +200,12 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 130, -1, -1));
 
-        jTextField10.addActionListener(new java.awt.event.ActionListener() {
+        txtigv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField10ActionPerformed(evt);
+                txtigvActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 390, 140, -1));
+        getContentPane().add(txtigv, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 390, 140, -1));
 
         jButton2.setText("GENERAR VENTA");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -199,16 +219,16 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("SUB TOTAL");
         getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, 100, 20));
-        getContentPane().add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 350, 140, -1));
+        getContentPane().add(txtsubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 350, 140, -1));
 
         jLabel5.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("ENTER");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 180, 70, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin7.jpg"))); // NOI18N
-        jLabel1.setText("jLabel1");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 840, 480));
+        txtimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin7.jpg"))); // NOI18N
+        txtimg.setText("jLabel1");
+        getContentPane().add(txtimg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 840, 480));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -220,16 +240,18 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ActualizarStock();
         pdf();
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
+    private void txtigvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtigvActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField10ActionPerformed
+    }//GEN-LAST:event_txtigvActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txttotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttotalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txttotalActionPerformed
 
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
         // TODO add your handling code here:
@@ -240,6 +262,94 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
       dialog.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void txtcantidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcantidadKeyPressed
+if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (!"".equals(txtcantidad.getText())) {
+                String cod = txtidproducto.getText();
+                String descripcion = txtnombre.getText();
+                int cant = Integer.parseInt(txtcantidad.getText());
+                double precio = Double.parseDouble(txtprecio.getText());
+                
+                double total = cant * precio;
+                int stock = Integer.parseInt(txtstock.getText());
+                if (stock >= cant) {
+                    item = item + 1;
+                    modelo= (DefaultTableModel) tablaventas.getModel();
+                    for (int i = 0; i < tablaventas.getRowCount(); i++) {
+                        if (tablaventas.getValueAt(i, 2).equals(txtnombre.getText())) {
+                            JOptionPane.showMessageDialog(null, "El producto ya esta registrado");
+                            LimpiarVenta();
+                            return;
+                        }
+                    }
+                    
+                    ArrayList lista = new ArrayList();
+                    lista.add(item);
+                    lista.add(cod);
+                    lista.add(descripcion);
+                    lista.add(precio);
+                    lista.add(cant);
+                    lista.add(total);
+                    
+                    Object[] O = new Object[6];
+                    O[0] = lista.get(1);
+                    O[1] = lista.get(2);
+                    O[2] = lista.get(3);
+                    O[3] = lista.get(4);
+                    O[4] = lista.get(5);
+                   
+                    modelo.addRow(O);
+                    tablaventas.setModel(modelo);
+                    TotalPagar();
+                    LimpiarVenta();
+                    txtnombre.requestFocus();
+                    
+                  
+                } else {
+                    JOptionPane.showMessageDialog(null, "No disponemos de esa cantidad en el stock");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingrese Cantidad");
+            }
+        }         
+    }//GEN-LAST:event_txtcantidadKeyPressed
+
+     private void TotalPagar() {
+        totalpagar = 0.00;
+        int numFila = tablaventas.getRowCount();
+        double igvs=0;
+        for (int i = 0; i < numFila; i++) {
+            double cal = Double.parseDouble(String.valueOf(tablaventas.getModel().getValueAt(i, 4)));
+            totalpagar = totalpagar + cal;
+            igv=totalpagar*0.19;
+            igvs=igv;
+            subtotal= totalpagar-igvs;
+           
+        }
+        txttotal.setText(String.format("%.2f", totalpagar));
+        txtsubtotal.setText(String.format("%.2f",subtotal));
+        txtigv.setText(String.format("%.2f",igv));
+    }
+       private void ActualizarStock() {
+            
+             for (int i = 0; i < tablaventas.getRowCount(); i++) {
+            int cod = Integer.parseInt(tablaventas.getValueAt(i, 0).toString());
+            int cant = Integer.parseInt(tablaventas.getValueAt(i, 3).toString());
+              pro = prodao.BuscarPro(cod);
+            int StockActual = Integer.parseInt(pro.getCantidad()) - cant;
+            prodao.ActualizarStock(StockActual, cod);
+            
+             
+            
+             }
+    }
+     private void LimpiarVenta() {
+        txtidproducto.setText("");
+        txtnombre.setText("");
+        txtcantidad.setText("");
+        txtstock.setText("");
+        txtprecio.setText("");
+    }
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -277,7 +387,6 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -291,18 +400,19 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JTable tablaventas;
+    private javax.swing.JTextField txtcantidad;
+    public static javax.swing.JTextField txtidproducto;
+    private javax.swing.JTextField txtigv;
+    private javax.swing.JLabel txtimg;
+    public static javax.swing.JTextField txtnombre;
+    public static javax.swing.JTextField txtprecio;
+    public static javax.swing.JTextField txtstock;
+    private javax.swing.JTextField txtsubtotal;
+    private javax.swing.JTextField txttotal;
     // End of variables declaration//GEN-END:variables
 private void pdf() {
         try {
