@@ -55,6 +55,7 @@ public class Carrito_interfaz extends javax.swing.JDialog {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         Tablalistado = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -71,6 +72,14 @@ public class Carrito_interfaz extends javax.swing.JDialog {
         jScrollPane1.setViewportView(Tablalistado);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 650, 200));
+
+        jButton1.setText("PRODUCTO SELECCIONADO");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 360, 370, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin7.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -178,6 +187,7 @@ public class Carrito_interfaz extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Tablalistado;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
