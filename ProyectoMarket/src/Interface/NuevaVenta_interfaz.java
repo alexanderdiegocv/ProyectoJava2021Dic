@@ -5,6 +5,7 @@
  */
 package Interface;
 
+import Class.Configuracion.Empresa;
 import Class.productos.Producto;
 import Class.productos.funciones_productos;
 import com.itextpdf.text.BaseColor;
@@ -31,6 +32,7 @@ import Class.productos.Producto;
 import Class.venta.Detalleventa;
 import Class.venta.funciones_venta;
 import Class.venta.ventas;
+import java.util.List;
 
 /**
  *
@@ -516,12 +518,14 @@ private void pdf() {
             Encabezado.setHorizontalAlignment(Element.ALIGN_LEFT);
            
 
-             Encabezado.addCell(img);
-
-           
+            Encabezado.addCell(img);
+            
+            List <String> data = new ArrayList();
+            
+            data = Empresa.Call_Datos();
 
             Encabezado.addCell("");
-            Encabezado.addCell("Ruc: " +2+ "\nNombre: " + 3 + "\nTelefono: " + 4 + "\nDireccion: " + 5+ "\nRazon: " + 6);
+            Encabezado.addCell("Ruc: " +data.get(0)+ "\nNombre: " + data.get(3) + "\nTelefono: " + data.get(2) + "\nDireccion: " + data.get(4)+ "\nGerente: " + data.get(5));
             Encabezado.addCell(fecha);
             doc.add(Encabezado);
 

@@ -1,5 +1,14 @@
 package Class.Configuracion;
 
+import Class.Conexion;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Empresa {
     private String RUC;
     private String ciudad;
@@ -65,5 +74,34 @@ public class Empresa {
         this.gerente = gerente;
     }
     
-    //public static
+    public static List Call_Datos(){
+        String sql="SELECT*FROM empresa";
+        List<String> data = new ArrayList<String>();
+        try
+        {   
+            Conexion cn= new Conexion();
+            Connection con;
+            PreparedStatement ps;
+            ResultSet rs;
+            
+            con=cn.getConnection();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery(sql);
+
+            if(rs.next())
+            {
+                data.add(rs.getString("RUC"));
+                data.add(rs.getString("ciudad"));
+                data.add(rs.getString("telefono"));
+                data.add(rs.getString("nombre"));
+                data.add(rs.getString("direccion"));
+                data.add(rs.getString("gerente"));
+            }
+        }catch(SQLException e)
+        {
+            System.out.println(e.toString());
+        }
+        
+        return data;
+    }
 }

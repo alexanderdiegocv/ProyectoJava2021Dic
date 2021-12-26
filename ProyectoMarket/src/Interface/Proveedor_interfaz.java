@@ -18,6 +18,7 @@ public class Proveedor_interfaz extends javax.swing.JFrame {
 
     funciones_proveedor fp = new funciones_proveedor();
     DefaultTableModel modelo;
+    
     Conexion cn= new Conexion();
     Connection con;
     PreparedStatement ps;
