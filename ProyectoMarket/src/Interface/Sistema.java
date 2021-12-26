@@ -5,6 +5,10 @@
  */
 package Interface;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author admi
@@ -179,8 +183,12 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-     Producto_interfaz p =new Producto_interfaz();
-     p.setVisible(true);
+        try {
+            Producto_interfaz p =new Producto_interfaz();
+            p.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
      dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 

@@ -5,18 +5,50 @@
  */
 package Interface;
 
+import Class.Conexion;
+import java.awt.HeadlessException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author admi
  */
 public class Configuracion_interfaz extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Configuracion_interfaz
-     */
+    Conexion cn= new Conexion();
+    Connection con;
+    PreparedStatement ps;
+    ResultSet rs;
+    Statement st;
+    
     public Configuracion_interfaz() {
         initComponents();
         this.setLocationRelativeTo(null);
+        String sql="SELECT*FROM empresa";
+        try
+        {
+            con=cn.getConnection();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery(sql);
+
+            if(rs.next())
+            {
+                jTextRUC.setText(rs.getString("RUC"));
+                jTextCiudad.setText(rs.getString("ciudad"));
+                jtextTelefono.setText(rs.getString("telefono"));
+                jTextNombre_Empresa.setText(rs.getString("nombre"));
+                jTextDireccion.setText(rs.getString("direccion"));
+                jTextGerente.setText(rs.getString("gerente"));
+            }
+        }catch(SQLException e)
+        {
+            System.out.println(e.toString());
+        }
     }
 
     /**
@@ -36,14 +68,14 @@ public class Configuracion_interfaz extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButtonActualizar_Datos = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        jTextCiudad = new javax.swing.JTextField();
+        jtextTelefono = new javax.swing.JTextField();
+        jTextNombre_Empresa = new javax.swing.JTextField();
+        jTextDireccion = new javax.swing.JTextField();
+        jTextGerente = new javax.swing.JTextField();
+        jTextRUC = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -94,24 +126,24 @@ public class Configuracion_interfaz extends javax.swing.JFrame {
         jLabel8.setText("NOMBRE  EMPRESA");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 160, 160, -1));
 
-        jButton1.setText("ACTUALIZAR DATOS DEL SISTEMA");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonActualizar_Datos.setText("ACTUALIZAR DATOS DEL SISTEMA");
+        jButtonActualizar_Datos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonActualizar_DatosActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 360, 350, -1));
+        getContentPane().add(jButtonActualizar_Datos, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 360, 350, -1));
 
         jLabel9.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("TELEFONO");
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, 80, -1));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 140, -1));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 290, 140, -1));
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 160, 140, -1));
-        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 220, 140, -1));
-        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 290, 140, -1));
-        getContentPane().add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, 140, -1));
+        getContentPane().add(jTextCiudad, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 140, -1));
+        getContentPane().add(jtextTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 290, 140, -1));
+        getContentPane().add(jTextNombre_Empresa, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 160, 140, -1));
+        getContentPane().add(jTextDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 220, 140, -1));
+        getContentPane().add(jTextGerente, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 290, 140, -1));
+        getContentPane().add(jTextRUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, 140, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin7.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -126,9 +158,29 @@ public class Configuracion_interfaz extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButtonActualizar_DatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizar_DatosActionPerformed
+        String sql="UPDATE empresa SET RUC='"+jTextRUC.getText()+ "',ciudad='"+jTextCiudad.getText()+"',telefono='"+jtextTelefono.getText()+"',nombre='"+jTextNombre_Empresa.getText()+"',direccion='"+jTextDireccion.getText()+"',gerente='"+jTextGerente.getText()+"'  where RUC ='"+jTextRUC.getText()+"'";
+
+   
+     try
+        {
+            if(!"".equals(jTextRUC.getText())||!"".equals(jTextCiudad.getText())||!"".equals(jTextNombre_Empresa.getText())||!"".equals(jtextTelefono.getText())|| !"".equals(jTextDireccion.getText())||!"".equals(jTextGerente.getText()))
+            {
+                con=cn.getConnection();
+                st = con.createStatement();
+                st.executeUpdate(sql);
+                
+                JOptionPane.showMessageDialog(null,"Datos actualizado");
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Completa los espacios");
+            }
+        }catch(HeadlessException | SQLException e)
+        {
+            System.out.println(e.toString());
+            
+        }
+    }//GEN-LAST:event_jButtonActualizar_DatosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -166,8 +218,8 @@ public class Configuracion_interfaz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButtonActualizar_Datos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -177,11 +229,11 @@ public class Configuracion_interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextCiudad;
+    private javax.swing.JTextField jTextDireccion;
+    private javax.swing.JTextField jTextGerente;
+    private javax.swing.JTextField jTextNombre_Empresa;
+    private javax.swing.JTextField jTextRUC;
+    private javax.swing.JTextField jtextTelefono;
     // End of variables declaration//GEN-END:variables
 }
