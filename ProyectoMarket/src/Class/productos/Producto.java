@@ -2,6 +2,7 @@
 package Class.productos;
 
 import Class.Conexion;
+import Class.proveedores.Proveedor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -96,10 +97,6 @@ public class Producto {
        } catch (SQLException e) {
            System.out.println(e.toString()); 
        }
-       
-        for (Producto producto : ListaProd) {
-            System.out.println(producto.getDescripcion());
-        }
        
       return ListaProd;
     }
@@ -208,6 +205,10 @@ try
 
     public int getId_proveedor() {
         return id_proveedor;
+    }
+    
+    public String getNombre_proveedor(int id_proveedor) {
+        return Proveedor.BuscarProveedorId(id_proveedor);
     }
 
     public void setId_proveedor(int id_proveedor) {

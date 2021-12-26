@@ -2,6 +2,7 @@ package Interface;
 
 import Class.Conexion;
 import Class.productos.Producto;    
+import Class.proveedores.Proveedor;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,10 +27,45 @@ public class Producto_interfaz extends javax.swing.JFrame {
     ResultSet rs;
     Statement st;
     
-    public Producto_interfaz() {
+    public Producto_interfaz() throws SQLException {
         initComponents();
         this.setLocationRelativeTo(null);
         Inhabilitar();
+        
+        jComboBoxProveedores.addItem("Proveedor");
+        
+        String sql = "SELECT*FROM proveedores";
+         
+        try {
+            con=cn.getConnection();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+
+            //DefaultComboBoxModel lista = new DefaultComboBoxModel();
+            //jComboBoxProveedores.setModel(lista);
+            
+            while(rs.next()){
+                    jComboBoxProveedores.addItem(
+                        new Proveedor(
+                                rs.getInt("id_proveedor"),
+                                rs.getString("nombre_proveedor")
+                        ).getNombre()
+                    );
+                    /*lista.addElement(
+                        new Proveedor(
+                            rs.getInt("id_proveedor"),
+                            rs.getString("nombre_proveedor")
+                        )
+                    );*/
+            }
+        } catch (SQLException e) {
+           System.out.println(e.toString()); 
+        }
+        
+        //Proveedor res = (Proveedor) jComboBoxProveedores.getSelectedItem();
+        //int id = res.getId_proveedor();
+        //System.out.println("ID de Proveedor: "+id);
+        
         mostrarProductos();
     }
     
@@ -91,7 +130,7 @@ public class Producto_interfaz extends javax.swing.JFrame {
             ob[3]=ListaProductos.get(i).getPrecio();
             ob[4]=ListaProductos.get(i).getUnidades();  
             ob[5]=ListaProductos.get(i).getStock();
-            ob[6]=ListaProductos.get(i).getId_proveedor();
+            ob[6]=ListaProductos.get(i).getNombre_proveedor(ListaProductos.get(i).getId_proveedor());
             modelo.addRow(ob);
         }
         tablaproductos.setModel(modelo);  
@@ -99,11 +138,11 @@ public class Producto_interfaz extends javax.swing.JFrame {
     
     private void Modificar(){
   
-    String sql="UPDATE productos SET nombre='"+txtnombre.getText()+ "',descripcion='"+txtdescripcion.getText()+"',precio='"+txtprecio.getText()+"',unidades='"+txtunidades.getText()+"',stock='"+txtstock.getText()+"',id_proveedor='"+1+"'  WHERE id_producto ='"+txtID.getText()+"'";
+    String sql="UPDATE productos SET nombre='"+txtnombre.getText()+ "',descripcion='"+txtdescripcion.getText()+"',precio='"+txtprecio.getText()+"',unidades='"+txtunidades.getText()+"',stock='"+txtstock.getText()+"',id_proveedor='"+Proveedor.BuscarProveedorNombre((String) jComboBoxProveedores.getSelectedItem())+"'  WHERE id_producto ='"+txtID.getText()+"'";
 
      try
         {
-            if(!"".equals(txtID.getText())||!"".equals(txtnombre.getText())||!"".equals(txtdescripcion.getText())||!"".equals(txtprecio.getText())|| !"".equals(txtunidades.getText())||!"".equals(txtstock.getText()))
+            if(!"".equals(txtID.getText())||!"".equals(txtnombre.getText())||!"".equals(txtdescripcion.getText())||!"".equals(txtprecio.getText())|| !"".equals(txtunidades.getText())||!"".equals(txtstock.getText())|| !"Proveedor".equals((String) jComboBoxProveedores.getSelectedItem()))
             {
                 con=cn.getConnection();
                 st=con.createStatement();
@@ -135,7 +174,7 @@ public class Producto_interfaz extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtdescripcion = new javax.swing.JTextField();
         txtprecio = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBoxProveedores = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         txtnombre = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -167,13 +206,12 @@ public class Producto_interfaz extends javax.swing.JFrame {
         getContentPane().add(txtdescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 230, -1));
         getContentPane().add(txtprecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 110, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        jComboBoxProveedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jComboBoxProveedoresActionPerformed(evt);
             }
         });
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 90, 130, -1));
+        getContentPane().add(jComboBoxProveedores, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 90, 130, 20));
 
         jLabel4.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -297,6 +335,11 @@ public class Producto_interfaz extends javax.swing.JFrame {
         });
         getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 400, 80, 50));
 
+        txtbuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtbuscarActionPerformed(evt);
+            }
+        });
         txtbuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtbuscarKeyReleased(evt);
@@ -320,9 +363,9 @@ public class Producto_interfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtnombreActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void jComboBoxProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxProveedoresActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_jComboBoxProveedoresActionPerformed
 
     private void tablaproductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaproductosMouseClicked
         int fila = tablaproductos.rowAtPoint(evt.getPoint());
@@ -339,7 +382,7 @@ public class Producto_interfaz extends javax.swing.JFrame {
             txtprecio.setText(tablaproductos.getValueAt(fila, 3).toString());
             txtunidades.setText(tablaproductos.getValueAt(fila, 4).toString());
             txtstock.setText(tablaproductos.getValueAt(fila, 5).toString());
-            
+            jComboBoxProveedores.setSelectedItem(tablaproductos.getValueAt(fila, 6).toString());
         }
     }//GEN-LAST:event_tablaproductosMouseClicked
 
@@ -378,9 +421,9 @@ public class Producto_interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if(!"".equals(txtnombre.getText())||!"".equals(txtdescripcion.getText())||!"".equals(txtprecio.getText())|| !"".equals(txtunidades.getText())||!"".equals(txtstock.getText()))
+        if(!"".equals(txtnombre.getText())||!"".equals(txtdescripcion.getText())||!"".equals(txtprecio.getText())|| !"".equals(txtunidades.getText())||!"".equals(txtstock.getText())|| !"Proveedor".equals(jComboBoxProveedores.getSelectedItem()))
       {
-           Producto pd = new Producto(txtnombre.getText(),txtdescripcion.getText(),txtprecio.getText(), txtunidades.getText(), txtstock.getText(), 1);
+           Producto pd = new Producto(txtnombre.getText(),txtdescripcion.getText(),txtprecio.getText(), txtunidades.getText(), txtstock.getText(), Proveedor.BuscarProveedorNombre((String) jComboBoxProveedores.getSelectedItem()));
            //pd.setId_producto(Integer.parseInt(txtID.getText()));
            pd.RegistrarProducto(pd);
            
@@ -399,7 +442,36 @@ public class Producto_interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void txtbuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtbuscarKeyReleased
+        String[]titulos ={"Id", "Nombre", "Descripción", "Precio", "Unidades", "Stock", "Proveedor"};   
+        String[]registros=new String[10];
 
+        String sql="SELECT*FROM productos WHERE nombre LIKE '%"+txtbuscar.getText()+"%'";
+
+        modelo=new DefaultTableModel(null,titulos);
+        try
+        {
+           con=cn.getConnection();
+           st=con.createStatement();
+           rs=st.executeQuery(sql);
+
+            while(rs.next())
+            {
+
+                registros[0]=rs.getString("id_producto");
+                registros[1]=rs.getString("nombre");
+                registros[2]=rs.getString("descripcion");
+                registros[3]=rs.getString("precio");
+                registros[4]=rs.getString("unidades");
+                registros[5]=rs.getString("stock");
+                registros[6]=rs.getString("id_proveedor");
+               modelo.addRow(registros);
+
+            }
+            tablaproductos.setModel(modelo);
+        }catch(SQLException e)
+        {
+            System.out.println(e.toString());
+        }
        
     }//GEN-LAST:event_txtbuscarKeyReleased
 
@@ -408,6 +480,10 @@ public class Producto_interfaz extends javax.swing.JFrame {
         sis.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void txtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarActionPerformed
+        
+    }//GEN-LAST:event_txtbuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -439,7 +515,11 @@ public class Producto_interfaz extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Producto_interfaz().setVisible(true);
+                try {
+                    new Producto_interfaz().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Producto_interfaz.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -450,7 +530,7 @@ public class Producto_interfaz extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBoxProveedores;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

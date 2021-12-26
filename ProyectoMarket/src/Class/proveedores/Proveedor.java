@@ -23,9 +23,6 @@ public class Proveedor {
     private String correo;
     private String razon;  
 
-    public Proveedor() {
-    }
-
     public Proveedor(String dni, String nombre, String telefono, String direccion, String correo, String razon) {
         this.dni = dni;
         this.nombre = nombre;
@@ -33,6 +30,11 @@ public class Proveedor {
         this.direccion = direccion;
         this.correo = correo;
         this.razon = razon;
+    }
+
+    public Proveedor(int id_proveedor, String nombre) {
+        this.id_proveedor = id_proveedor;
+        this.nombre = nombre;
     }
 
     public int getId_proveedor() {
@@ -91,7 +93,33 @@ public class Proveedor {
         this.razon = razon;
     }
     
-    public String BuscarProveedor(int id_proveedor){
+    public static int BuscarProveedorNombre(String nombre){
+
+        String sql="SELECT*FROM proveedores WHERE nombre_proveedor LIKE '%"+nombre+"%'";
+        int id = 0;
+        try
+        {
+            Conexion cn= new Conexion();
+            Connection con;
+            PreparedStatement ps;
+            ResultSet rs;
+            
+            con=cn.getConnection();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery(sql);
+
+            if(rs.next())
+            {
+                id = rs.getInt("id_proveedor");
+            }
+        }catch(SQLException e)
+        {
+            System.out.println(e.toString());
+        }
+        return id;
+    }
+    
+    public static String BuscarProveedorId(int id_proveedor){
 
         String sql="SELECT*FROM proveedores WHERE id_proveedor LIKE '%"+id_proveedor+"%'";
         String nombre = "";
