@@ -28,6 +28,9 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import Class.productos.Producto;
+import Class.venta.Detalleventa;
+import Class.venta.funciones_venta;
+import Class.venta.ventas;
 
 /**
  *
@@ -35,19 +38,21 @@ import Class.productos.Producto;
  */
 public class NuevaVenta_interfaz extends javax.swing.JFrame {
     DefaultTableModel modelo;
-    double totalpagar=0.0;
+    double totalpagar =0.0;
     int item;
     double subtotal=0.0;
     double igv=0.0;
     private String cantidad;
     private int id_producto;
-    
+    ventas v =new ventas();
     Producto pro = new Producto(id_producto);
-    
+    funciones_venta fv =new funciones_venta();
     funciones_productos prodao =new funciones_productos();
+    Detalleventa dv =new Detalleventa();
     public NuevaVenta_interfaz() {
         initComponents();
         this.setLocationRelativeTo(null);
+        inhabilitar();
     }
 
     /**
@@ -60,11 +65,11 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton5 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtcliente = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txttotal = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtdnicliente = new javax.swing.JTextField();
         txtcantidad = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -78,7 +83,7 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtprecio = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
+        txtpago = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
@@ -102,7 +107,7 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 400, 80, 50));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 30, 140, -1));
+        getContentPane().add(txtcliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 30, 140, -1));
 
         jLabel3.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -120,7 +125,7 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txttotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, 140, -1));
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, 130, -1));
+        getContentPane().add(txtdnicliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, 130, -1));
 
         txtcantidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -175,12 +180,12 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, 70, 20));
         getContentPane().add(txtprecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 130, 140, -1));
 
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+        txtpago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
+                txtpagoActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 140, -1));
+        getContentPane().add(txtpago, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 140, -1));
 
         jLabel12.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -240,8 +245,18 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
         ActualizarStock();
+        RegistrarVenta();
+        RegistrarDetalle();
         pdf();
+        LimpiarVenta();
+        for(int i=0;i<tablaventas.getRowCount();i++)
+ {
+     modelo.removeRow(i);
+     i=i-1;
+ }
+        
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -253,9 +268,9 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txttotalActionPerformed
 
-    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+    private void txtpagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpagoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9ActionPerformed
+    }//GEN-LAST:event_txtpagoActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
        Carrito_interfaz dialog = new Carrito_interfaz(new javax.swing.JFrame(), true);
@@ -301,7 +316,7 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                     modelo.addRow(O);
                     tablaventas.setModel(modelo);
                     TotalPagar();
-                    LimpiarVenta();
+                    limpiarproducto();
                     txtnombre.requestFocus();
                     
                   
@@ -315,7 +330,7 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
     }//GEN-LAST:event_txtcantidadKeyPressed
 
      private void TotalPagar() {
-        totalpagar = 0.00;
+        totalpagar = 0.000;
         int numFila = tablaventas.getRowCount();
         double igvs=0;
         for (int i = 0; i < numFila; i++) {
@@ -326,9 +341,10 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             subtotal= totalpagar-igvs;
            
         }
-        txttotal.setText(String.format("%.2f", totalpagar));
-        txtsubtotal.setText(String.format("%.2f",subtotal));
-        txtigv.setText(String.format("%.2f",igv));
+        txttotal.setText(String.valueOf(totalpagar));
+        txtsubtotal.setText(String.valueOf(subtotal));
+        txtigv.setText(String.valueOf(igv));
+        
     }
        private void ActualizarStock() {
             
@@ -343,14 +359,73 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             
              }
     }
+      private void RegistrarVenta()
+{
+    String dni_cliente=txtdnicliente.getText();
+    String nombre_cliente=txtcliente.getText();
+    int factura_detalle=Integer.parseInt(txtdnicliente.getText());
+    double monto = totalpagar;
+    v.setDni_cliente(dni_cliente);
+    v.setNombre_cliente(nombre_cliente);
+    v.setMonto_total(monto);
+    v.setId_facturadetalle(factura_detalle);
+    fv.RegistrarVenta(v);
+}
+private void RegistrarDetalle()
+{
+    for(int i=0;i<tablaventas.getRowCount();i++)
+    {
+        
+        int cod = Integer.parseInt(txtdnicliente.getText());
+        String nombre =tablaventas.getValueAt(i,1).toString();
+        double precio =Double.parseDouble(tablaventas.getValueAt(i,2).toString());
+        int cant=Integer.parseInt(tablaventas.getValueAt(i,3).toString());
+        int id =1;
+        
+        dv.setId_facturadetalle(cod);
+        dv.setProducto(nombre);
+        dv.setPrecio(precio);
+        dv.setCantidad(cant);
+  
+        fv.RegistrarDetalle(dv);
+        
+       
+    }
+}
      private void LimpiarVenta() {
+        txtcliente.setText("");
+        txtdnicliente.setText("");
         txtidproducto.setText("");
         txtnombre.setText("");
         txtcantidad.setText("");
         txtstock.setText("");
         txtprecio.setText("");
+        txtsubtotal.setText("");
+        txtigv.setText("");
+        txttotal.setText("");
     }
-   
+     private void limpiarproducto()
+     {
+         txtidproducto.setText("");
+        txtnombre.setText("");
+        txtcantidad.setText("");
+        txtstock.setText("");
+        txtprecio.setText("");
+       
+     }
+      void inhabilitar(){
+        txtidproducto.setEnabled(false);
+        txtnombre.setEnabled(false);
+        txtstock.setEnabled(false);
+        txtprecio.setEnabled(false);
+       
+        txtidproducto.setText("");
+        txtnombre.setText("");
+        txtstock.setText("");
+        txtprecio.setText("");
+
+    }
+  
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -400,15 +475,15 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JTable tablaventas;
     private javax.swing.JTextField txtcantidad;
+    private javax.swing.JTextField txtcliente;
+    private javax.swing.JTextField txtdnicliente;
     public static javax.swing.JTextField txtidproducto;
     private javax.swing.JTextField txtigv;
     private javax.swing.JLabel txtimg;
     public static javax.swing.JTextField txtnombre;
+    private javax.swing.JTextField txtpago;
     public static javax.swing.JTextField txtprecio;
     public static javax.swing.JTextField txtstock;
     private javax.swing.JTextField txtsubtotal;
@@ -417,7 +492,8 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 private void pdf() {
         try {
             int id = 1;
-            
+            double vuelto=Double.parseDouble(txtpago.getText())-Double.parseDouble(txttotal.getText());
+            System.out.println(vuelto);
             FileOutputStream archivo;
             File file = new File("src/pdf/venta" + id + ".pdf");
             archivo = new FileOutputStream(file);
@@ -453,51 +529,71 @@ private void pdf() {
             cli.add(Chunk.NEWLINE);
             cli.add("Datos de los clientes" + "\n\n");
             doc.add(cli);
-
-            PdfPTable tablacli = new PdfPTable(4);
+            PdfPTable tablacli = new PdfPTable(2);
             tablacli.setWidthPercentage(100);
             tablacli.getDefaultCell().setBorder(0);
-            float[] Columnacli = new float[]{20f, 20f, 20f, 20f};
+            float[] Columnacli = new float[]{40f,40f};
             tablacli.setWidths(Columnacli);
             tablacli.setHorizontalAlignment(Element.ALIGN_LEFT);
-            PdfPCell cl1 = new PdfPCell(new com.itextpdf.text.Phrase("id producto", negrita));
+            PdfPCell cl1 = new PdfPCell(new com.itextpdf.text.Phrase("Dni", negrita));
             PdfPCell cl2 = new PdfPCell(new com.itextpdf.text.Phrase("Nombre", negrita));
-            PdfPCell cl3 = new PdfPCell(new com.itextpdf.text.Phrase("Precio", negrita));
-            PdfPCell cl4 = new PdfPCell(new com.itextpdf.text.Phrase("Cantidad", negrita));
-            PdfPCell cl5 = new PdfPCell(new com.itextpdf.text.Phrase("Precio Total", negrita));
+         
             cl1.setBorder(0);
             cl2.setBorder(0);
-            cl3.setBorder(0);
-            cl4.setBorder(0);
-       
+          
+            tablacli.addCell(cl1);
+            tablacli.addCell(cl2);
+    
+            tablacli.addCell(txtdnicliente.getText());
+            tablacli.addCell(txtcliente.getText());
+            
 
             doc.add(tablacli);
+    
 
             //productos
-            PdfPTable tablapro = new PdfPTable(4);
+            PdfPTable tablapro = new PdfPTable(5);
             tablapro.setWidthPercentage(100);
             tablapro.getDefaultCell().setBorder(0);
-            float[] Columnapro = new float[]{20f, 20f, 20f, 20f};
+            float[] Columnapro = new float[]{20f, 20f, 20f, 20f,20f};
             tablapro.setWidths(Columnapro);
             tablapro.setHorizontalAlignment(Element.ALIGN_LEFT);
-            PdfPCell pro1 = new PdfPCell(new com.itextpdf.text.Phrase("Descripcion", negrita));
-            PdfPCell pro2 = new PdfPCell(new com.itextpdf.text.Phrase("Cant.", negrita));
-            PdfPCell pro3 = new PdfPCell(new com.itextpdf.text.Phrase("Precio U.", negrita));
-            PdfPCell pro4 = new PdfPCell(new com.itextpdf.text.Phrase("Precio T.", negrita));
+            PdfPCell pro1 = new PdfPCell(new com.itextpdf.text.Phrase("id producto", negrita));
+            PdfPCell pro2 = new PdfPCell(new com.itextpdf.text.Phrase("Nombre", negrita));
+            PdfPCell pro3 = new PdfPCell(new com.itextpdf.text.Phrase("Precio", negrita));
+            PdfPCell pro4 = new PdfPCell(new com.itextpdf.text.Phrase("Cantidad", negrita));
+            PdfPCell pro5 = new PdfPCell(new com.itextpdf.text.Phrase("Precio Total", negrita));
             pro1.setBorder(0);
             pro2.setBorder(0);
             pro3.setBorder(0);
             pro4.setBorder(0);
+            pro5.setBorder(0);
             pro1.setBackgroundColor(BaseColor.WHITE);
             pro2.setBackgroundColor(BaseColor.WHITE);
             pro3.setBackgroundColor(BaseColor.WHITE);
             pro4.setBackgroundColor(BaseColor.WHITE);
+            pro5.setBackgroundColor(BaseColor.WHITE);
             tablapro.addCell(pro1);
             tablapro.addCell(pro2);
             tablapro.addCell(pro3);
             tablapro.addCell(pro4);
-            doc.add(tablapro);
-        
+            tablapro.addCell(pro5);
+            
+          
+            for (int i = 0; i < tablaventas.getRowCount(); i++) {
+            
+                String id_producto=tablaventas.getValueAt(i, 0).toString();
+                String producto = tablaventas.getValueAt(i, 1).toString();
+                String precio = tablaventas.getValueAt(i, 2).toString();
+                String cant = tablaventas.getValueAt(i, 3).toString();
+                String total = tablaventas.getValueAt(i, 4).toString();
+                tablapro.addCell(id_producto);
+                tablapro.addCell(producto);
+                tablapro.addCell(precio);
+                tablapro.addCell(cant);
+                tablapro.addCell(total);
+            }
+           doc.add(tablapro);
 
             Paragraph info = new Paragraph();
           
@@ -506,16 +602,16 @@ private void pdf() {
             Paragraph total = new Paragraph();
             info.add(Chunk.NEWLINE);
             
-            info.add("Pago :S/.200 " );
+            info.add("Pago :S/."+txtpago.getText()+".0");
             info.setAlignment(Element.ALIGN_RIGHT);
             doc.add(info);
             total.add(Chunk.NEWLINE);
-            total.add("Total a pagar:S/.180" );
+            total.add("Total a pagar: S/."+txttotal.getText() );
             total.setAlignment(Element.ALIGN_JUSTIFIED);
             doc.add(total);
             
             pago.add(Chunk.NEWLINE);
-            pago.add("Vuelto:S/.20.5" );
+            pago.add("Vuelto: S/."+String.valueOf(vuelto) );
             pago.setAlignment(Element.ALIGN_RIGHT);
             doc.add(pago);
          
