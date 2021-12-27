@@ -25,7 +25,7 @@ public class Empresa {
         this.dirección = dirección;
         this.gerente = gerente;
     }
-
+    
     public String getRUC() {
         return RUC;
     }

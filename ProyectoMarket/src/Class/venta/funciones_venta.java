@@ -8,7 +8,10 @@ package Class.venta;
 import Class.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class funciones_venta {
@@ -16,6 +19,7 @@ public class funciones_venta {
       Connection con;
     Conexion cn =new Conexion();
     PreparedStatement ps;
+    ResultSet rs;
     int r;
     
        public int RegistrarVenta(ventas v)
@@ -70,4 +74,33 @@ public class funciones_venta {
         return r;
         
     }
+ public List ListarVentas()
+   {
+      List< ventas > Listapv = new ArrayList();
+      
+      String sql="SELECT*FROM ventas";
+      
+       try {
+           con=cn.getConnection();
+           ps=con.prepareStatement(sql);
+           rs=ps.executeQuery();
+           while(rs.next())
+           {
+                    ventas v = new ventas();
+                    v.setId_venta(rs.getInt("id_venta"));
+                    v.setDni_cliente(rs.getString("dni_cliente"));
+                    v.setNombre_cliente(rs.getString("nombre_cliente"));
+                    v.setMonto_total(rs.getDouble("monto_total"));
+                    v.setId_facturadetalle(rs.getInt("id_facturadetalle"));
+                    v.setFecha(rs.getString("fecha"));
+                    
+                    Listapv.add(v);
+           }
+       } catch (SQLException e) {
+           System.out.println(e.toString()); 
+       }
+      return Listapv;
+   }
+
 }
+ 

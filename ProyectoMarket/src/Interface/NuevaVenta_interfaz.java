@@ -516,16 +516,15 @@ private void pdf() {
             float[] ColumnaEncabezado = new float[]{20f, 30f, 70f, 40f};
             Encabezado.setWidths(ColumnaEncabezado);
             Encabezado.setHorizontalAlignment(Element.ALIGN_LEFT);
-           
-
             Encabezado.addCell(img);
             
-            List <String> data = new ArrayList();
             
-            data = Empresa.Call_Datos();
+            
+            List <String> data = new ArrayList();
+            data=Empresa.Call_Datos();
 
             Encabezado.addCell("");
-            Encabezado.addCell("Ruc: " +data.get(0)+ "\nNombre: " + data.get(3) + "\nTelefono: " + data.get(2) + "\nDireccion: " + data.get(4)+ "\nGerente: " + data.get(5));
+            Encabezado.addCell("RUC: " +data.get(0)+ "\nNombre: " + data.get(3) + "\nTelefono: " + data.get(2) + "\nDireccion: " + data.get(4)+ "\nGerente: " + data.get(5));
             Encabezado.addCell(fecha);
             doc.add(Encabezado);
 
@@ -597,6 +596,7 @@ private void pdf() {
                 tablapro.addCell(cant);
                 tablapro.addCell(total);
             }
+            
            doc.add(tablapro);
 
             Paragraph info = new Paragraph();

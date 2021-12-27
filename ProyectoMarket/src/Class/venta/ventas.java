@@ -8,11 +8,20 @@ public class ventas {
     private String nombre_cliente;
     private double monto_total;
     private int id_facturadetalle;
+    private String fecha;
     public ventas() {
     }
 
     public int getId_venta() {
         return id_venta;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     public void setId_venta(int id_venta) {
