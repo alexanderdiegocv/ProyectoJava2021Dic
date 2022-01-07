@@ -247,8 +247,10 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-        ActualizarStock();
+
+       
+                
+                 ActualizarStock();
         RegistrarVenta();
         RegistrarDetalle();
         pdf();
@@ -257,7 +259,9 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
  {
      modelo.removeRow(i);
      i=i-1;
- }
+ }       
+          
+    
         
         
     }//GEN-LAST:event_jButton2ActionPerformed

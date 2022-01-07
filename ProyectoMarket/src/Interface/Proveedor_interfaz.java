@@ -77,16 +77,17 @@ void limpiar()
     
     modelo=(DefaultTableModel) tablaproveedor.getModel();
     
-     Object[] ob= new Object[6];
+     Object[] ob= new Object[7];
      
     for(int i=0;i<Listarpv.size();i++)
     {
-        ob[0]=Listarpv.get(i).getDni();
-        ob[1]=Listarpv.get(i).getNombre();
-        ob[2]=Listarpv.get(i).getTelefono();
-        ob[3]=Listarpv.get(i).getCorreo();
-        ob[4]=Listarpv.get(i).getDireccion();  
-        ob[5]=Listarpv.get(i).getRazon();
+        ob[0]=Listarpv.get(i).getId_proveedor();
+        ob[1]=Listarpv.get(i).getDni();
+        ob[2]=Listarpv.get(i).getNombre();
+        ob[3]=Listarpv.get(i).getTelefono();
+        ob[4]=Listarpv.get(i).getCorreo();
+        ob[5]=Listarpv.get(i).getDireccion();  
+        ob[6]=Listarpv.get(i).getRazon();
         modelo.addRow(ob);
     }
     tablaproveedor.setModel(modelo);  
@@ -96,7 +97,7 @@ void limpiar()
   void modificar()
 {
   
-    String sql="UPDATE proveedores SET dni_proveedor='"+txtdni.getText()+ "',nombre_proveedor='"+txtnombre.getText()+"',telefono='"+txttelefono.getText()+"',direccion='"+txtdireccion.getText()+"',correo='"+txtcorreo.getText()+"',razon='"+txtrazon.getText()+"'  where dni_proveedor ='"+txtdni.getText()+"'";
+    String sql="UPDATE proveedores SET id_proveedor='"+txtid_proveedor.getText()+ "', dni_proveedor='"+txtdni.getText()+ "',nombre_proveedor='"+txtnombre.getText()+"',telefono='"+txttelefono.getText()+"',direccion='"+txtdireccion.getText()+"',correo='"+txtcorreo.getText()+"',razon='"+txtrazon.getText()+"'  where id_proveedor ='"+txtid_proveedor.getText()+"'";
 
    
      try
@@ -209,7 +210,7 @@ void limpiar()
 
             },
             new String [] {
-                "Dni", "Nombre", "Telefono", "Correo", "Direccion", "Razon"
+                "id proveeedor", "Dni", "Nombre", "Telefono", "Correo", "Direccion", "Razon"
             }
         ));
         tablaproveedor.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -384,13 +385,13 @@ if(pregunta==0)
             JOptionPane.showMessageDialog(null,"Usuario no seleccionado");
         }
         else{
-           
-            txtdni.setText(tablaproveedor.getValueAt(fila, 0).toString());
-            txtnombre.setText(tablaproveedor.getValueAt(fila, 1).toString());
-            txttelefono.setText(tablaproveedor.getValueAt(fila, 2).toString());
-            txtcorreo.setText(tablaproveedor.getValueAt(fila, 3).toString());
-            txtdireccion.setText(tablaproveedor.getValueAt(fila, 4).toString());
-            txtrazon.setText(tablaproveedor.getValueAt(fila, 5).toString());
+            txtid_proveedor.setText(tablaproveedor.getValueAt(fila, 0).toString());
+            txtdni.setText(tablaproveedor.getValueAt(fila, 1).toString());
+            txtnombre.setText(tablaproveedor.getValueAt(fila, 2).toString());
+            txttelefono.setText(tablaproveedor.getValueAt(fila, 3).toString());
+            txtcorreo.setText(tablaproveedor.getValueAt(fila, 4).toString());
+            txtdireccion.setText(tablaproveedor.getValueAt(fila, 5).toString());
+            txtrazon.setText(tablaproveedor.getValueAt(fila, 6).toString());
  
         }
     }//GEN-LAST:event_tablaproveedorMouseClicked

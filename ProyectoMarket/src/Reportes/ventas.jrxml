@@ -82,7 +82,7 @@ FROM
 				<textFieldExpression><![CDATA[$F{ventas_id_facturadetalle}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="472" y="13" width="100" height="20" uuid="d9715a0c-a6cc-4a32-9b35-949e5c4ad60e"/>
+				<reportElement x="492" y="13" width="91" height="20" uuid="d9715a0c-a6cc-4a32-9b35-949e5c4ad60e"/>
 				<textFieldExpression><![CDATA[$F{ventas_fecha}]]></textFieldExpression>
 			</textField>
 		</band>
