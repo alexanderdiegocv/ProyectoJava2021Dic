@@ -9,8 +9,22 @@ import Class.Conexion;
 import Class.proveedores.Proveedor;
 import Class.venta.funciones_venta;
 import Class.venta.ventas;
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -18,6 +32,8 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import java.util.Date;
+import static sun.management.Agent.error;
 
 /**
  *
@@ -27,11 +43,21 @@ public class Ventas_interfaz extends javax.swing.JFrame {
 
     DefaultTableModel modelo;
     funciones_venta fv =new funciones_venta();
+   
     Conexion con= new Conexion();
+    
+    PreparedStatement ps;
+    ResultSet rs;
+    Statement st;
+    private Date fecha;
     public Ventas_interfaz() {
         initComponents();
          this.setLocationRelativeTo(null);
          ListarProveedores();
+       
+
+         
+       
     }
 
     public void ListarProveedores(){
@@ -61,10 +87,11 @@ public class Ventas_interfaz extends javax.swing.JFrame {
 
         jButton5 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtfecha = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaventa = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jComboBoxventas = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -86,12 +113,8 @@ public class Ventas_interfaz extends javax.swing.JFrame {
         jLabel4.setText("VENTAS");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 20, 120, 30));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 110, 30));
+        txtfecha.setText("2021/12/26");
+        getContentPane().add(txtfecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 100, -1));
 
         tablaventa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -113,6 +136,9 @@ public class Ventas_interfaz extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, 730, -1));
 
+        jComboBoxventas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ventas 1", "Ventas  2", "Ventas 3", "Ventas 4" }));
+        getContentPane().add(jComboBoxventas, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 80, 80, -1));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin7.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 840, 480));
@@ -125,27 +151,38 @@ public class Ventas_interfaz extends javax.swing.JFrame {
         sis.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
+SimpleDateFormat conver = new SimpleDateFormat("yyyy/MM/dd");
+Date fecha1;
+private String nuevoFormato;
+
+
+
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-  
+ 
     Connection conn =con.getConnection();
         JasperReport reportes;
         reportes = null;
         String path = "src\\Reportes\\ventas.jasper ";
+   
+      
         try {
+             Map parametro =new HashMap();
+        
+ fecha1 = conver.parse(txtfecha.getText());
+          parametro.put("fecha",fecha1);
+
             reportes = (JasperReport) JRLoader.loadObjectFromFile(path);
-            JasperPrint jprint = JasperFillManager.fillReport(path, null,conn);
+            JasperPrint jprint = JasperFillManager.fillReport(path,parametro,conn);
             JasperViewer view = new JasperViewer(jprint, false);
             view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             view.setVisible(true);
         } catch (JRException e) {
             System.out.println(e.toString());
-        }
+        } catch (ParseException ex) {
+            Logger.getLogger(Ventas_interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
 
     
     public static void main(String args[]) {
@@ -183,10 +220,11 @@ public class Ventas_interfaz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> jComboBoxventas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tablaventa;
+    private javax.swing.JTextField txtfecha;
     // End of variables declaration//GEN-END:variables
 }

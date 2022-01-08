@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a18c36d0-0d23-4933-94bb-c11e2c063f3a">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="75"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="fecha" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dni_cliente" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombre_cliente" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      ventas.`dni_cliente` AS ventas_dni_cliente,
@@ -10,14 +19,19 @@
      ventas.`monto_total` AS ventas_monto_total,
      ventas.`id_facturadetalle` AS ventas_id_facturadetalle,
      ventas.`fecha` AS ventas_fecha
+     
 FROM
-     `ventas` ventas]]>
+      ventas `ventas`
+WHERE ventas.fecha = $P{fecha}]]>
 	</queryString>
 	<field name="ventas_dni_cliente" class="java.lang.String"/>
 	<field name="ventas_nombre_cliente" class="java.lang.String"/>
 	<field name="ventas_monto_total" class="java.lang.Double"/>
 	<field name="ventas_id_facturadetalle" class="java.lang.Integer"/>
 	<field name="ventas_fecha" class="java.sql.Date"/>
+	<variable name="ventas_monto_total_1" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventas_monto_total}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -82,16 +96,35 @@ FROM
 				<textFieldExpression><![CDATA[$F{ventas_id_facturadetalle}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="492" y="13" width="91" height="20" uuid="d9715a0c-a6cc-4a32-9b35-949e5c4ad60e"/>
+				<reportElement x="481" y="13" width="91" height="20" uuid="d9715a0c-a6cc-4a32-9b35-949e5c4ad60e"/>
 				<textFieldExpression><![CDATA[$F{ventas_fecha}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="472" y="14" width="100" height="20" uuid="0441d116-818d-4d33-86bd-d2071423c19a"/>
+				<textFieldExpression><![CDATA[$V{ventas_monto_total_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="388" y="14" width="64" height="20" uuid="a0e90649-61b7-4db8-8403-979aff372bf9"/>
+				<text><![CDATA[Venta Total]]></text>
+			</staticText>
+		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="266" y="0" width="80" height="20" uuid="a17bada9-a280-4dc1-a7df-9c67595329f4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="348" y="0" width="40" height="20" uuid="f5abfbea-6d80-49ee-acc4-80157d338711"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>
