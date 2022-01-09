@@ -6,7 +6,6 @@
 package Interface;
 
 import Class.Conexion;
-import Class.proveedores.Proveedor;
 import Class.venta.funciones_venta;
 import Class.venta.ventas;
 import java.sql.Connection;
