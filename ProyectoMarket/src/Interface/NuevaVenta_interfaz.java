@@ -248,18 +248,29 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-       
-                
-                 ActualizarStock();
-        RegistrarVenta();
-        RegistrarDetalle();
-        pdf();
-        LimpiarVenta();
-        for(int i=0;i<tablaventas.getRowCount();i++)
- {
-     modelo.removeRow(i);
-     i=i-1;
- }       
+        /*if(!"".equals(txtdnicliente.getText()) || !"".equals(txtcliente.getText()) || !"".equals(txtsubtotal.getText()) || !"".equals(txttotal.getText()) || !"".equals(txtigv.getText()) || !"".equals(txtpago.getText())){
+            JOptionPane.showMessageDialog(null,"Hay campos vacíos");
+            return;
+        }else{  
+            ActualizarStock();
+            RegistrarVenta();
+            RegistrarDetalle();
+            pdf();
+            LimpiarVenta();
+            for(int i=0;i<tablaventas.getRowCount();i++){
+                modelo.removeRow(i);
+                i=i-1;
+            }   
+        }*/
+            ActualizarStock();
+            RegistrarVenta();
+            RegistrarDetalle();
+            pdf();
+            LimpiarVenta();
+            for(int i=0;i<tablaventas.getRowCount();i++){
+                modelo.removeRow(i);
+                i=i-1;
+            }     
           
     
         
