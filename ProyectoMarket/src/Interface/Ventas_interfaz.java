@@ -32,6 +32,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import static sun.management.Agent.error;
 
 /**
@@ -90,7 +91,6 @@ public class Ventas_interfaz extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaventa = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jComboBoxventas = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -112,8 +112,8 @@ public class Ventas_interfaz extends javax.swing.JFrame {
         jLabel4.setText("VENTAS");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 20, 120, 30));
 
-        txtfecha.setText("2021/12/26");
-        getContentPane().add(txtfecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 100, -1));
+        txtfecha.setText("aaaa/mm/dd");
+        getContentPane().add(txtfecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 160, 30));
 
         tablaventa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -123,6 +123,11 @@ public class Ventas_interfaz extends javax.swing.JFrame {
                 "id venta", "dni cliente", "Nombre Cliente", "Monto total", "id factura", "Fecha"
             }
         ));
+        tablaventa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaventaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaventa);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, 730, 220));
@@ -134,9 +139,6 @@ public class Ventas_interfaz extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, 730, -1));
-
-        jComboBoxventas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ventas 1", "Ventas  2", "Ventas 3", "Ventas 4" }));
-        getContentPane().add(jComboBoxventas, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 80, 80, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin7.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -167,8 +169,21 @@ private String nuevoFormato;
       
         try {
              Map parametro =new HashMap();
+             
+        String fecha = txtfecha.getText();
+        String[] fechaDesestructurada = fecha.split("/");
+        if(fechaDesestructurada[0].length() != 4){
+            JOptionPane.showMessageDialog(null,"El año tiene que tener 4 dijitos");
+            return;
+        }else if(fechaDesestructurada[1].length() != 2){
+            JOptionPane.showMessageDialog(null,"El mes tiene que tener 2 dijitos");
+            return;
+        }else if(fechaDesestructurada[2].length() != 2){
+            JOptionPane.showMessageDialog(null,"El día tiene que tener 2 dijitos");
+            return;
+        }
         
- fecha1 = conver.parse(txtfecha.getText());
+        fecha1 = conver.parse(txtfecha.getText());
           parametro.put("fecha",fecha1);
 
             reportes = (JasperReport) JRLoader.loadObjectFromFile(path);
@@ -182,6 +197,27 @@ private String nuevoFormato;
             Logger.getLogger(Ventas_interfaz.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tablaventaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaventaMouseClicked
+        int fila = tablaventa.rowAtPoint(evt.getPoint());
+    
+        if(fila==-1){
+            JOptionPane.showMessageDialog(null,"Producto no seleccionado");
+        }
+        else{
+            String fechaDesestructurada = tablaventa.getValueAt(fila, 5).toString();
+            String[] fechaPartes = fechaDesestructurada.split("-");
+            String fechaEstructurada = "";
+            for (int i = 0; i < fechaPartes.length; i++) {
+                if(i+1 == fechaPartes.length){
+                    fechaEstructurada += fechaPartes[i];
+                }else {
+                    fechaEstructurada += fechaPartes[i] + "/";   
+                }
+            }
+            txtfecha.setText(fechaEstructurada);
+        }
+    }//GEN-LAST:event_tablaventaMouseClicked
 
     
     public static void main(String args[]) {
@@ -219,7 +255,6 @@ private String nuevoFormato;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBoxventas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
