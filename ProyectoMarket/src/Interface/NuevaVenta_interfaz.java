@@ -39,18 +39,20 @@ import java.util.List;
  * @author admi
  */
 public class NuevaVenta_interfaz extends javax.swing.JFrame {
+
     DefaultTableModel modelo;
-    double totalpagar =0.0;
+    double totalpagar = 0.0;
     int item;
-    double subtotal=0.0;
-    double igv=0.0;
+    double subtotal = 0.0;
+    double igv = 0.0;
     private String cantidad;
     private int id_producto;
-    ventas v =new ventas();
+    ventas v = new ventas();
     Producto pro = new Producto(id_producto);
-    funciones_venta fv =new funciones_venta();
-    funciones_productos prodao =new funciones_productos();
-    Detalleventa dv =new Detalleventa();
+    funciones_venta fv = new funciones_venta();
+    funciones_productos prodao = new funciones_productos();
+    Detalleventa dv = new Detalleventa();
+
     public NuevaVenta_interfaz() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -241,40 +243,41 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        Sistema sis =new Sistema();
+        Sistema sis = new Sistema();
         sis.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+ 
 
-        /*if(!"".equals(txtdnicliente.getText()) || !"".equals(txtcliente.getText()) || !"".equals(txtsubtotal.getText()) || !"".equals(txttotal.getText()) || !"".equals(txtigv.getText()) || !"".equals(txtpago.getText())){
-            JOptionPane.showMessageDialog(null,"Hay campos vacíos");
+        if (!"".equals(txtdnicliente.getText()) && !"".equals(txtcliente.getText()) && !"".equals(txtsubtotal.getText()) && !"".equals(txttotal.getText()) && !"".equals(txtigv.getText()) && !"".equals(txtpago.getText())) {
+           int pago=Integer.parseInt(txtpago.getText());
+ double total= Double.parseDouble(txttotal.getText());
+            if(total< pago)
+           {
+               
+           
+            ActualizarStock();
+            RegistrarVenta();
+            RegistrarDetalle();
+            pdf();
+            LimpiarVenta();
+            for (int i = 0; i < tablaventas.getRowCount(); i++) {
+                modelo.removeRow(i);
+                i = i - 1;
+
+            }
+            }
+           else
+           {
+               JOptionPane.showMessageDialog(null, "El pago no es suficiente");
+           return;
+           }
+        } else {
+            JOptionPane.showMessageDialog(null, "Hay campos vacíos");
             return;
-        }else{  
-            ActualizarStock();
-            RegistrarVenta();
-            RegistrarDetalle();
-            pdf();
-            LimpiarVenta();
-            for(int i=0;i<tablaventas.getRowCount();i++){
-                modelo.removeRow(i);
-                i=i-1;
-            }   
-        }*/
-            ActualizarStock();
-            RegistrarVenta();
-            RegistrarDetalle();
-            pdf();
-            LimpiarVenta();
-            for(int i=0;i<tablaventas.getRowCount();i++){
-                modelo.removeRow(i);
-                i=i-1;
-            }     
-          
-    
-        
-        
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtigvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtigvActionPerformed
@@ -290,23 +293,23 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_txtpagoActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       Carrito_interfaz dialog = new Carrito_interfaz(new javax.swing.JFrame(), true);
-      dialog.setVisible(true);
+        Carrito_interfaz dialog = new Carrito_interfaz(new javax.swing.JFrame(), true);
+        dialog.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txtcantidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcantidadKeyPressed
-if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (!"".equals(txtcantidad.getText())) {
                 String cod = txtidproducto.getText();
                 String descripcion = txtnombre.getText();
                 int cant = Integer.parseInt(txtcantidad.getText());
                 double precio = Double.parseDouble(txtprecio.getText());
-                
+
                 double total = cant * precio;
                 int stock = Integer.parseInt(txtstock.getText());
                 if (stock >= cant) {
                     item = item + 1;
-                    modelo= (DefaultTableModel) tablaventas.getModel();
+                    modelo = (DefaultTableModel) tablaventas.getModel();
                     for (int i = 0; i < tablaventas.getRowCount(); i++) {
                         if (tablaventas.getValueAt(i, 2).equals(txtnombre.getText())) {
                             JOptionPane.showMessageDialog(null, "El producto ya esta registrado");
@@ -314,7 +317,7 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                             return;
                         }
                     }
-                    
+
                     ArrayList lista = new ArrayList();
                     lista.add(item);
                     lista.add(cod);
@@ -322,94 +325,91 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                     lista.add(precio);
                     lista.add(cant);
                     lista.add(total);
-                    
+
                     Object[] O = new Object[6];
                     O[0] = lista.get(1);
                     O[1] = lista.get(2);
                     O[2] = lista.get(3);
                     O[3] = lista.get(4);
                     O[4] = lista.get(5);
-                   
+
                     modelo.addRow(O);
                     tablaventas.setModel(modelo);
                     TotalPagar();
                     limpiarproducto();
                     txtnombre.requestFocus();
-                    
-                  
+
                 } else {
                     JOptionPane.showMessageDialog(null, "No disponemos de esa cantidad en el stock");
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Ingrese Cantidad");
             }
-        }         
+        }
     }//GEN-LAST:event_txtcantidadKeyPressed
 
-     private void TotalPagar() {
+    private void TotalPagar() {
         totalpagar = 0.000;
         int numFila = tablaventas.getRowCount();
-        double igvs=0;
+        double igvs = 0;
         for (int i = 0; i < numFila; i++) {
             double cal = Double.parseDouble(String.valueOf(tablaventas.getModel().getValueAt(i, 4)));
             totalpagar = totalpagar + cal;
-            igv=totalpagar*0.19;
-            igvs=igv;
-            subtotal= totalpagar-igvs;
-           
+            igv = totalpagar * 0.19;
+            igvs = igv;
+            subtotal = totalpagar - igvs;
+
         }
         txttotal.setText(String.valueOf(totalpagar));
         txtsubtotal.setText(String.valueOf(subtotal));
         txtigv.setText(String.valueOf(igv));
-        
+
     }
-       private void ActualizarStock() {
-            
-             for (int i = 0; i < tablaventas.getRowCount(); i++) {
+
+    private void ActualizarStock() {
+
+        for (int i = 0; i < tablaventas.getRowCount(); i++) {
             int cod = Integer.parseInt(tablaventas.getValueAt(i, 0).toString());
             int cant = Integer.parseInt(tablaventas.getValueAt(i, 3).toString());
-              pro = prodao.BuscarPro(cod);
+            pro = prodao.BuscarPro(cod);
             int StockActual = Integer.parseInt(pro.getStock()) - cant;
             prodao.ActualizarStock(StockActual, cod);
-            
-             
-            
-             }
+
+        }
     }
-      private void RegistrarVenta()
-{
-    String dni_cliente=txtdnicliente.getText();
-    String nombre_cliente=txtcliente.getText();
-    int factura_detalle=Integer.parseInt(txtdnicliente.getText());
-    double monto = totalpagar;
-    v.setDni_cliente(dni_cliente);
-    v.setNombre_cliente(nombre_cliente);
-    v.setMonto_total(monto);
-    v.setId_facturadetalle(factura_detalle);
-    fv.RegistrarVenta(v);
-}
-private void RegistrarDetalle()
-{
-    for(int i=0;i<tablaventas.getRowCount();i++)
-    {
-        
-        int cod = Integer.parseInt(txtdnicliente.getText());
-        String nombre =tablaventas.getValueAt(i,1).toString();
-        double precio =Double.parseDouble(tablaventas.getValueAt(i,2).toString());
-        int cant=Integer.parseInt(tablaventas.getValueAt(i,3).toString());
-        int id =1;
-        
-        dv.setId_facturadetalle(cod);
-        dv.setProducto(nombre);
-        dv.setPrecio(precio);
-        dv.setCantidad(cant);
-  
-        fv.RegistrarDetalle(dv);
-        
-       
+
+    private void RegistrarVenta() {
+        String dni_cliente = txtdnicliente.getText();
+        String nombre_cliente = txtcliente.getText();
+        int factura_detalle = Integer.parseInt(txtdnicliente.getText());
+        double monto = totalpagar;
+        v.setDni_cliente(dni_cliente);
+        v.setNombre_cliente(nombre_cliente);
+        v.setMonto_total(monto);
+        v.setId_facturadetalle(factura_detalle);
+        fv.RegistrarVenta(v);
     }
-}
-     private void LimpiarVenta() {
+
+    private void RegistrarDetalle() {
+        for (int i = 0; i < tablaventas.getRowCount(); i++) {
+
+            int cod = Integer.parseInt(txtdnicliente.getText());
+            String nombre = tablaventas.getValueAt(i, 1).toString();
+            double precio = Double.parseDouble(tablaventas.getValueAt(i, 2).toString());
+            int cant = Integer.parseInt(tablaventas.getValueAt(i, 3).toString());
+            int id = 1;
+
+            dv.setId_facturadetalle(cod);
+            dv.setProducto(nombre);
+            dv.setPrecio(precio);
+            dv.setCantidad(cant);
+
+            fv.RegistrarDetalle(dv);
+
+        }
+    }
+
+    private void LimpiarVenta() {
         txtcliente.setText("");
         txtdnicliente.setText("");
         txtidproducto.setText("");
@@ -421,28 +421,29 @@ private void RegistrarDetalle()
         txtigv.setText("");
         txttotal.setText("");
     }
-     private void limpiarproducto()
-     {
-         txtidproducto.setText("");
+
+    private void limpiarproducto() {
+        txtidproducto.setText("");
         txtnombre.setText("");
         txtcantidad.setText("");
         txtstock.setText("");
         txtprecio.setText("");
-       
-     }
-      void inhabilitar(){
+
+    }
+
+    void inhabilitar() {
         txtidproducto.setEnabled(false);
         txtnombre.setEnabled(false);
         txtstock.setEnabled(false);
         txtprecio.setEnabled(false);
-       
+
         txtidproducto.setText("");
         txtnombre.setText("");
         txtstock.setText("");
         txtprecio.setText("");
 
     }
-  
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -509,7 +510,7 @@ private void RegistrarDetalle()
 private void pdf() {
         try {
             int id = 1;
-            double vuelto=Double.parseDouble(txtpago.getText())-Double.parseDouble(txttotal.getText());
+            double vuelto = Double.parseDouble(txtpago.getText()) - Double.parseDouble(txttotal.getText());
             System.out.println(vuelto);
             FileOutputStream archivo;
             File file = new File("src/pdf/venta" + id + ".pdf");
@@ -523,7 +524,7 @@ private void pdf() {
             Font negrita = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLUE);
             fecha.add(Chunk.NEWLINE);
             Date date = new Date();
-            fecha.add("Factura:" + id + "\n" + "Fecha: " +date.toString() + "\n\n");
+            fecha.add("Factura:" + id + "\n" + "Fecha: " + date.toString() + "\n\n");
 
             PdfPTable Encabezado = new PdfPTable(4);
             Encabezado.setWidthPercentage(100);
@@ -532,14 +533,12 @@ private void pdf() {
             Encabezado.setWidths(ColumnaEncabezado);
             Encabezado.setHorizontalAlignment(Element.ALIGN_LEFT);
             Encabezado.addCell(img);
-            
-            
-            
-            List <String> data = new ArrayList();
-            data=Empresa.Call_Datos();
+
+            List<String> data = new ArrayList();
+            data = Empresa.Call_Datos();
 
             Encabezado.addCell("");
-            Encabezado.addCell("RUC: " +data.get(0)+ "\nNombre: " + data.get(3) + "\nTelefono: " + data.get(2) + "\nDireccion: " + data.get(4)+ "\nGerente: " + data.get(5));
+            Encabezado.addCell("RUC: " + data.get(0) + "\nNombre: " + data.get(3) + "\nTelefono: " + data.get(2) + "\nDireccion: " + data.get(4) + "\nGerente: " + data.get(5));
             Encabezado.addCell(fecha);
             doc.add(Encabezado);
 
@@ -550,30 +549,28 @@ private void pdf() {
             PdfPTable tablacli = new PdfPTable(2);
             tablacli.setWidthPercentage(100);
             tablacli.getDefaultCell().setBorder(0);
-            float[] Columnacli = new float[]{40f,40f};
+            float[] Columnacli = new float[]{40f, 40f};
             tablacli.setWidths(Columnacli);
             tablacli.setHorizontalAlignment(Element.ALIGN_LEFT);
             PdfPCell cl1 = new PdfPCell(new com.itextpdf.text.Phrase("Dni", negrita));
             PdfPCell cl2 = new PdfPCell(new com.itextpdf.text.Phrase("Nombre", negrita));
-         
+
             cl1.setBorder(0);
             cl2.setBorder(0);
-          
+
             tablacli.addCell(cl1);
             tablacli.addCell(cl2);
-    
+
             tablacli.addCell(txtdnicliente.getText());
             tablacli.addCell(txtcliente.getText());
-            
 
             doc.add(tablacli);
-    
 
             //productos
             PdfPTable tablapro = new PdfPTable(5);
             tablapro.setWidthPercentage(100);
             tablapro.getDefaultCell().setBorder(0);
-            float[] Columnapro = new float[]{20f, 20f, 20f, 20f,20f};
+            float[] Columnapro = new float[]{20f, 20f, 20f, 20f, 20f};
             tablapro.setWidths(Columnapro);
             tablapro.setHorizontalAlignment(Element.ALIGN_LEFT);
             PdfPCell pro1 = new PdfPCell(new com.itextpdf.text.Phrase("id producto", negrita));
@@ -596,11 +593,10 @@ private void pdf() {
             tablapro.addCell(pro3);
             tablapro.addCell(pro4);
             tablapro.addCell(pro5);
-            
-          
+
             for (int i = 0; i < tablaventas.getRowCount(); i++) {
-            
-                String id_producto=tablaventas.getValueAt(i, 0).toString();
+
+                String id_producto = tablaventas.getValueAt(i, 0).toString();
                 String producto = tablaventas.getValueAt(i, 1).toString();
                 String precio = tablaventas.getValueAt(i, 2).toString();
                 String cant = tablaventas.getValueAt(i, 3).toString();
@@ -611,29 +607,28 @@ private void pdf() {
                 tablapro.addCell(cant);
                 tablapro.addCell(total);
             }
-            
-           doc.add(tablapro);
+
+            doc.add(tablapro);
 
             Paragraph info = new Paragraph();
-          
+
             Paragraph pago = new Paragraph();
-             
+
             Paragraph total = new Paragraph();
             info.add(Chunk.NEWLINE);
-            
-            info.add("Pago :S/."+txtpago.getText()+".0");
+
+            info.add("Pago :S/." + txtpago.getText() + ".0");
             info.setAlignment(Element.ALIGN_RIGHT);
             doc.add(info);
             total.add(Chunk.NEWLINE);
-            total.add("Total a pagar: S/."+txttotal.getText() );
+            total.add("Total a pagar: S/." + txttotal.getText());
             total.setAlignment(Element.ALIGN_JUSTIFIED);
             doc.add(total);
-            
+
             pago.add(Chunk.NEWLINE);
-            pago.add("Vuelto: S/."+String.valueOf(vuelto) );
+            pago.add("Vuelto: S/." + String.valueOf(vuelto));
             pago.setAlignment(Element.ALIGN_RIGHT);
             doc.add(pago);
-         
 
             Paragraph mensaje = new Paragraph();
             mensaje.add(Chunk.NEWLINE);
@@ -647,6 +642,5 @@ private void pdf() {
             System.out.println(e.toString());
         }
     }
-
 
 }

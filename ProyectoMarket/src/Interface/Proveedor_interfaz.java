@@ -366,7 +366,7 @@ else
 int pregunta=JOptionPane.showConfirmDialog(null,"Estas seguro que quieres eliminar");
 if(pregunta==0)
         {
-           int id1=Integer.parseInt(txtdni.getText());
+           int id1=Integer.parseInt(txtid_proveedor.getText());
            fp.EliminarCliente(id1);
            limpiar();
            ListarProveedores();
@@ -413,7 +413,7 @@ if(pregunta==0)
 
     private void txtbuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtbuscarKeyReleased
       
-String[]titulos ={"Dni","Nombre","Telefono","Correo","Direccion","Razon"};   
+String[]titulos ={"id_proveedor","Dni","Nombre","Telefono","Correo","Direccion","Razon"};   
 String[]registros=new String[50];
 
 String sql="SELECT*FROM proveedores WHERE dni_proveedor LIKE '%"+txtbuscar.getText()+"%'";
@@ -427,13 +427,13 @@ try
    
     while(rs.next())
     {
-        
-        registros[0]=rs.getString("dni_proveedor");
-        registros[1]=rs.getString("nombre_proveedor");
-        registros[2]=rs.getString("telefono");
-        registros[3]=rs.getString("correo");
-        registros[4]=rs.getString("direccion");
-        registros[5]=rs.getString("razon");
+        registros[0]=rs.getString("id_proveedor");
+        registros[1]=rs.getString("dni_proveedor");
+        registros[2]=rs.getString("nombre_proveedor");
+        registros[3]=rs.getString("telefono");
+        registros[4]=rs.getString("correo");
+        registros[5]=rs.getString("direccion");
+        registros[6]=rs.getString("razon");
        modelo.addRow(registros);
    
     }
