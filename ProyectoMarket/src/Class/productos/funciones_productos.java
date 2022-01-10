@@ -26,7 +26,7 @@ public class funciones_productos {
     ResultSet rs;
     public Integer totalregistros;
     
-      public DefaultTableModel mostrar (String buscar){
+    public DefaultTableModel mostrar (String buscar){
         DefaultTableModel modelo;
         
         String [] titulos = {"id_producto","Nombre","Precio","Stock"};

@@ -89,7 +89,7 @@ public class Carrito_interfaz extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
- int f =Tablalistado.getSelectedRow();
+        int f =Tablalistado.getSelectedRow();
       
        try{
            String codigo,descripcion,stock,precio,cant,importe,nombre;

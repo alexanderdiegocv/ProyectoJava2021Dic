@@ -32,8 +32,6 @@ public class Producto_interfaz extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         Inhabilitar();
         
-        jComboBoxProveedores.addItem("Proveedor");
-        
         String sql = "SELECT*FROM proveedores";
          
         try {

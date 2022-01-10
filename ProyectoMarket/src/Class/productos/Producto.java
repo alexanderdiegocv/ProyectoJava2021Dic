@@ -38,7 +38,6 @@ public class Producto {
     }
 
     public Producto(int id_producto) {
-   
        this.id_producto=id_producto;
     }
 
@@ -121,39 +120,6 @@ public class Producto {
             return false;
         }
     }
-    
-    
-    /*
-    String[]titulos ={"Dni","Nombre","Telefono","Correo","Direccion","Razon"};   
-String[]registros=new String[50];
-
-String sql="SELECT*FROM proveedores WHERE dni_proveedor LIKE '%"+txtbuscar.getText()+"%'";
-
-modelo=new DefaultTableModel(null,titulos);
-try
-{
-   con=cn.getConnection();
-   st=con.createStatement();
-   rs=st.executeQuery(sql);
-   
-    while(rs.next())
-    {
-        
-        registros[0]=rs.getString("dni_proveedor");
-        registros[1]=rs.getString("nombre_proveedor");
-        registros[2]=rs.getString("telefono");
-        registros[3]=rs.getString("correo");
-        registros[4]=rs.getString("direccion");
-        registros[5]=rs.getString("razon");
-       modelo.addRow(registros);
-   
-    }
-    tablaproveedor.setModel(modelo);
-}catch(SQLException e)
-{
-    System.out.println(e.toString());
-}
-    */
     
     public int getId_producto() {
         return id_producto;
