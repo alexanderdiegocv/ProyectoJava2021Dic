@@ -205,7 +205,7 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 130, -1, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 130, -1, -1));
 
         txtigv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -290,7 +290,7 @@ public class NuevaVenta_interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_txtpagoActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       Carrito_interfaz dialog = new Carrito_interfaz(new javax.swing.JFrame(), true);
+      Carrito_interfaz dialog = new Carrito_interfaz(new javax.swing.JFrame(), true);
       dialog.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -363,7 +363,7 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
         txtigv.setText(String.valueOf(igv));
         
     }
-       private void ActualizarStock() {
+     private void ActualizarStock() {
             
              for (int i = 0; i < tablaventas.getRowCount(); i++) {
             int cod = Integer.parseInt(tablaventas.getValueAt(i, 0).toString());

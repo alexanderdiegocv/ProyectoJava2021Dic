@@ -74,6 +74,7 @@ public class funciones_venta {
         return r;
         
     }
+         
  public List ListarVentas()
    {
       List< ventas > Listapv = new ArrayList();
