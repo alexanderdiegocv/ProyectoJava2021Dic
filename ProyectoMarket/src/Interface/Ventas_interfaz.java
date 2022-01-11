@@ -114,11 +114,6 @@ public class Ventas_interfaz extends javax.swing.JFrame {
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 20, 120, 30));
 
         txtfecha.setText("aaaa/mm/dd");
-        txtfecha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtfechaActionPerformed(evt);
-            }
-        });
         getContentPane().add(txtfecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 160, 30));
 
         tablaventa.setModel(new javax.swing.table.DefaultTableModel(
