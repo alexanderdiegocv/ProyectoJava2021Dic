@@ -16,6 +16,10 @@ import java.sql.SQLException;
  */
 public class login {
 
+    public static login iniciarsesion() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
@@ -23,7 +27,7 @@ public class login {
     
       public usuario iniciarsesion(String usuario,String contraseña)
     {
-        usuario user=new usuario();
+        usuario l=new usuario();
         
         String sql= "SELECT * FROM usuarios WHERE usuario =? and contraseña = ?";
         try
@@ -36,14 +40,14 @@ public class login {
             if(rs.next())
             {
            
-            user.setUsuario(rs.getString("usuario"));
-            user.setContraseña(rs.getString("contraseña"));
+            l.setUsuario(rs.getString("usuario"));
+            l.setContraseña(rs.getString("contraseña"));
          
             }    
         }catch(SQLException e)
                 {
                     System.out.println(e.toString());       
                 }
-        return user;
+        return l;
     }
 }

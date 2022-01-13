@@ -117,7 +117,7 @@ public class Sistema extends javax.swing.JFrame {
         jButton5.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/venta.png"))); // NOI18N
-        jButton5.setText("REPORTE DE VENTAS");
+        jButton5.setText("VENTAS");
         jButton5.setBorder(null);
         jButton5.setContentAreaFilled(false);
         jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -130,7 +130,7 @@ public class Sistema extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 60, 170, 150));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 60, 150, 150));
 
         jButton6.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 3, 18)); // NOI18N
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
@@ -177,7 +177,7 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Login log = new Login();
+      Login log = new Login();
         log.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -199,7 +199,7 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-     Configuracion_interfaz conf =new Configuracion_interfaz();
+  Configuracion_interfaz conf =new Configuracion_interfaz();
      conf.setVisible(true);
      dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
