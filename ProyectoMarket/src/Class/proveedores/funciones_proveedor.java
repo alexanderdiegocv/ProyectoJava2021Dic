@@ -72,7 +72,7 @@ public class funciones_proveedor {
    
    public boolean EliminarCliente(int id1)
     {
-        String sql="DELETE FROM proveedores WHERE dni_proveedor=?";
+        String sql="DELETE FROM proveedores WHERE id_proveedor=?";
         try
         {
             ps=con.prepareStatement(sql);

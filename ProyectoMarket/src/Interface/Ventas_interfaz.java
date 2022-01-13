@@ -91,6 +91,7 @@ public class Ventas_interfaz extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaventa = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -137,13 +138,21 @@ public class Ventas_interfaz extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, 730, 220));
 
-        jButton1.setText("Reporte de ventas general");
+        jButton1.setText("REPORTES DIARIOS");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, 730, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, 350, -1));
+
+        jButton2.setText("REPORTE GENERALES");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 370, 340, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portallogin7.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -166,13 +175,15 @@ private String nuevoFormato;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
  
-    Connection conn =con.getConnection();
+       Connection conn =con.getConnection();
         JasperReport reportes;
         reportes = null;
         String path = "src\\Reportes\\ventas.jasper ";
+        String path1= "src\\Reportes\\ventasgenerales.jasper";
    
       
         try {
+            
              Map parametro =new HashMap();
              
         String fecha = txtfecha.getText();
@@ -187,11 +198,11 @@ private String nuevoFormato;
             JOptionPane.showMessageDialog(null,"El día tiene que tener 2 dijitos");
             return;
         }
-        
-        fecha1 = conver.parse(txtfecha.getText());
+       
+          fecha1 = conver.parse(txtfecha.getText());
           parametro.put("fecha",fecha1);
 
-            reportes = (JasperReport) JRLoader.loadObjectFromFile(path);
+            reportes = (JasperReport) JRLoader.loadObjectFromFile(path);         
             JasperPrint jprint = JasperFillManager.fillReport(path,parametro,conn);
             JasperViewer view = new JasperViewer(jprint, false);
             view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -200,7 +211,8 @@ private String nuevoFormato;
             System.out.println(e.toString());
         } catch (ParseException ex) {
             Logger.getLogger(Ventas_interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tablaventaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaventaMouseClicked
@@ -223,6 +235,29 @@ private String nuevoFormato;
             txtfecha.setText(fechaEstructurada);
         }
     }//GEN-LAST:event_tablaventaMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+   Connection conn =con.getConnection();
+        JasperReport reportes;
+        reportes = null;
+    
+        String path1= "src\\Reportes\\ventasgenerales.jasper";
+   
+      
+        try {
+            
+             Map parametro =new HashMap();
+ 
+            reportes = (JasperReport) JRLoader.loadObjectFromFile(path1);         
+            JasperPrint jprint = JasperFillManager.fillReport(path1,null,conn);
+            JasperViewer view = new JasperViewer(jprint, false);
+            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            view.setVisible(true);
+        } catch (JRException e) {
+            System.out.println(e.toString());
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     public static void main(String args[]) {
@@ -259,6 +294,7 @@ private String nuevoFormato;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
